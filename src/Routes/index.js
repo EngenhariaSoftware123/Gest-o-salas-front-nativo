@@ -11,6 +11,7 @@ import TabRoutes from './tab.routes';
 import Login from '../screens/Login/Login';
 import Home from '../screens/Home/Home';
 import ManutencaoScreen from '../screens/Maintenance/Maintenance';
+import RegistroProfessor from '../screens/RegistrationTeacher/RegistrationTeacher';
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,10 @@ const Routes = () => {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="App" component={TabRoutes} />
         <Stack.Screen name="Maintenance" component={ManutencaoScreen} />
+        <Stack.Screen
+          name="RegistrationTeacher"
+          component={RegistroProfessor}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

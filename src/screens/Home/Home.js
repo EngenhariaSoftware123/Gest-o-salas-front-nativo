@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StatusBar,
   Button,
@@ -7,15 +7,20 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Home({route}) {
+export default function Home({ route }) {
   const navigation = useNavigation();
   const solicitarManutencao = () => {
     navigation.navigate('Maintenance');
     console.log('Solicitando manutenção...');
   };
-  const {name, email, photo, roles} = route.params;
+  const solicitarCadastroProfessor = () => {
+    navigation.navigate('RegistrationTeacher');
+    console.log('Solicitando cadastro do professor...');
+  };
+
+  const { name, email, photo, roles } = route.params;
 
   const [userName, setUserName] = useState(name);
   //console.log(userlogin);
@@ -27,6 +32,12 @@ export default function Home({route}) {
       <Text>{`${roles}`} </Text>
       <Text style={styles.title}>Bem Vindo</Text>
       <Text style={styles.container}>{`${userName}`}</Text>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={solicitarCadastroProfessor}>
+        <Text style={styles.buttonText}>Cadastrar Professor</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={solicitarManutencao}>
         <Text style={styles.buttonText}>Solicitar Manutenção</Text>
       </TouchableOpacity>
