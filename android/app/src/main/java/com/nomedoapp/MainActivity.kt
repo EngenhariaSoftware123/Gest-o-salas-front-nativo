@@ -1,4 +1,4 @@
-package com.nomedoapp
+package com.nomedoapp.nome
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

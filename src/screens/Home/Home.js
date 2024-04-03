@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StatusBar,
   Button,
@@ -9,19 +9,24 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-export default function Home() {
+export default function Home({route}) {
   const navigation = useNavigation();
   const solicitarManutencao = () => {
     navigation.navigate('Maintenance');
     console.log('Solicitando manutenção...');
   };
+  const {name, email, photo, roles} = route.params;
+
+  const [userName, setUserName] = useState(name);
+  //console.log(userlogin);
+  console.log(roles);
   return (
     <View style={styles.container}>
       <Text> </Text>
       <Text> </Text>
-      <Text> </Text>
+      <Text>{`${roles}`} </Text>
       <Text style={styles.title}>Bem Vindo</Text>
-      <Text style={styles.container}>User@Name</Text>
+      <Text style={styles.container}>{`${userName}`}</Text>
       <TouchableOpacity style={styles.button} onPress={solicitarManutencao}>
         <Text style={styles.buttonText}>Solicitar Manutenção</Text>
       </TouchableOpacity>
@@ -41,7 +46,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   text: {
-    fontSize: 18,
+    fontSize: 22,
   },
   button: {
     backgroundColor: '#007AFF',
