@@ -6,12 +6,12 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import axios from 'axios';
-import 'dotenv/config';
 
 const Login = () => {
   const [error, setError] = useState('');
@@ -23,15 +23,28 @@ const Login = () => {
   async function onGoogleButtonPress() {
     try {
       GoogleSignin.configure({
-        webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
-        androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
+        webClientId:
+          '',
+        androidClientId:
+          '',
       });
+      await GoogleSignin.signOut();
       // Verifica se o dispositivo suporta os serviços do Google Play
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
       // Obtém o token de ID do usuário
       const {idToken, user} = await GoogleSignin.signIn();
       // Navega para a tela Home com os dados do usuário como parâmetros
-
+      // Verifica o domínio do e-mail
+      if (!user.email.endsWith('@uesb.edu.br')) {
+        setError('Apenas email-s da uesb são permitido.');
+        Alert.alert(
+          'Erro',
+          'Apenas endereços de e-mail da UESB são permitidos.',
+          [{text: 'OK', onPress: () => {}}],
+          {cancelable: false},
+        );
+        return;
+      }
       const response = await axios.post(
         'https://gestao-de-espaco-api.onrender.com/user/auth-user',
         {
@@ -74,7 +87,7 @@ const Login = () => {
         </View>
         <TouchableOpacity
           onPress={async () => {
-            await onGoogleButtonPress();
+            onGoogleButtonPress();
           }}
           disabled={loading}>
           <Image
