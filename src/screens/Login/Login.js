@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {
   StyleSheet,
   Text,
@@ -9,59 +8,56 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {ANDROID_CLIENT_ID, WEB_CLIENT_ID} from 'react-native-dotenv';
-
-const GoogleLogin = async () => {
-  try {
-    await GoogleSignin.hasPlayServices();
-    return await GoogleSignin.signIn();
-  } catch (error) {
-    console.error('Erro ao fazer login com o Google:', error);
-    return null;
-  }
-};
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import axios from 'axios';
+import 'dotenv/config';
 
 const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation();
+  const [userLogged, setUserLogged] = useState({});
+  const [roles, setRoles] = useState([]);
+  const navigation = useNavigation(); // Importe useNavigation
 
-  useEffect(() => {
-    const configureGoogleSignIn = async () => {
-      await GoogleSignin.configure({
-        androidClientId: `${ANDROID_CLIENT_ID}`,
-        webClientId: `${WEB_CLIENT_ID}`,
-        scopes: ['profile', 'email'],
-      });
-    };
-
-    configureGoogleSignIn();
-  }, []);
-
-  const handleGoogleLogin = async () => {
-    if (loading) return;
-    setLoading(true);
-
+  async function onGoogleButtonPress() {
     try {
-      const response = await GoogleLogin();
-      if (response) {
-        const {idToken, user} = response;
-        // Assuming you have a function to validate the token
-        const resp = await authAPI.validateToken({
-          token: idToken,
+      GoogleSignin.configure({
+        webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
+        androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
+      });
+      // Verifica se o dispositivo suporta os serviços do Google Play
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+      // Obtém o token de ID do usuário
+      const {idToken, user} = await GoogleSignin.signIn();
+      // Navega para a tela Home com os dados do usuário como parâmetros
+
+      const response = await axios.post(
+        'https://gestao-de-espaco-api.onrender.com/user/auth-user',
+        {
           email: user.email,
-        });
-        await handlePostLoginData(resp.data); // Handle post login logic
-        navigation.navigate('Home'); // Navigate to Home screen after successful login
-      } else {
-        setError('Google sign-in failed');
-      }
-    } catch (error) {
-      setError(error?.response?.data?.error?.message || 'Something went wrong');
-    } finally {
-      setLoading(false);
+        },
+      );
+
+      setRoles(response.data);
+      navigation.navigate('Home', {
+        email: user.email,
+        name: user.name,
+        photo: user.photo,
+        roles: response.data.roles,
+      });
+      setUserLogged(user);
+      const googleCredential = await auth.GoogleAuthProvider.credential(
+        idToken,
+      );
+
+      // Faz login do usuário com a credencial
+      return await auth().signInWithCredential(googleCredential);
+      // Cria uma credencial do Google com o token
+    } catch (e) {
+      console.log(e);
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -76,7 +72,11 @@ const Login = () => {
         <View style={styles.boxTitle}>
           <Text style={styles.title}>UESB</Text>
         </View>
-        <TouchableOpacity onPress={handleGoogleLogin} disabled={loading}>
+        <TouchableOpacity
+          onPress={async () => {
+            await onGoogleButtonPress();
+          }}
+          disabled={loading}>
           <Image
             source={require('../../assets/img-login-google.png')}
             style={styles.imgLogin}

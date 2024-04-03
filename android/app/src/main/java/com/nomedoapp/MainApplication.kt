@@ -1,4 +1,4 @@
-package com.nomedoapp
+package com.nomedoapp.nome
 
 import android.app.Application
 import com.facebook.react.PackageList
