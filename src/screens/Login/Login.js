@@ -24,9 +24,9 @@ const Login = () => {
     try {
       GoogleSignin.configure({
         webClientId:
-          '733536154755-dj5g13i4jke8psktsk7a5eh09d4cn10m.apps.googleusercontent.com',
+          '',
         androidClientId:
-          '733536154755-dj5g13i4jke8psktsk7a5eh09d4cn10m.apps.googleusercontent.com',
+          '',
       });
       await GoogleSignin.signOut();
       // Verifica se o dispositivo suporta os serviços do Google Play
