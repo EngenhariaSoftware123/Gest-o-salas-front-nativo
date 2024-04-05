@@ -1,25 +1,34 @@
-import React, {useEffect} from 'react';
-import {View, Button} from 'react-native';
+import React, { useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import TabRoutes from './tab.routes';
 import Login from '../screens/Login/Login';
 import Home from '../screens/Home/Home';
 import ManutencaoScreen from '../screens/Maintenance/Maintenance';
 import RegistroProfessor from '../screens/RegistrationTeacher/RegistrationTeacher';
+import TabRoutes from './tab.routes';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const TabBar = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={Home} />
+    </Tab.Navigator>
+  );
+};
 
 const Routes = () => {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
-        '377017939708-ni2in93upntrr2oescbu2va00cg3pnj0.apps.googleusercontent.com', // Substitua pelo seu ID de cliente da Web
+        '377017939708-ni2in93upntrr2oescbu2va00cg3pnj0.apps.googleusercontent.com',
       offlineAccess: true,
     });
   }, []);
@@ -29,7 +38,7 @@ const Routes = () => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log('Usuário logado:', userInfo);
-      // Redirecione para a rota principal após o login bem-sucedido
+      // Redirecionar para a tela principal após o login bem-sucedido
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('Login cancelado');
@@ -45,14 +54,13 @@ const Routes = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{headerShown: false}}>
+      <Stack.Navigator initialRouteName="Login"
+        screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="MainApp" component={TabBar} />
         <Stack.Screen name="App" component={TabRoutes} />
-        <Stack.Screen name="Maintenance" component={ManutencaoScreen} />
-        <Stack.Screen
+        <Tab.Screen name="Maintenance" component={ManutencaoScreen} />
+        <Tab.Screen
           name="RegistrationTeacher"
           component={RegistroProfessor}
         />
