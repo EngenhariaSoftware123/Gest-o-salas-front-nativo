@@ -12,6 +12,8 @@ import Home from '../screens/Home/Home';
 import ManutencaoScreen from '../screens/Maintenance/Maintenance';
 import RegistroProfessor from '../screens/RegistrationTeacher/RegistrationTeacher';
 import TabRoutes from './tab.routes';
+import vincularGestorEspaço from '../screens/LinkManagersSpace/LinkManagersSpace'
+import RegistarSetor from '../screens/RegistrationSector/RegistrationSector'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -56,7 +58,7 @@ const Routes = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login"
         screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={Login} />
+        {/*  <Stack.Screen name="Login" component={Login} /> */}
         <Stack.Screen name="MainApp" component={TabBar} />
         <Stack.Screen name="App" component={TabRoutes} />
         <Tab.Screen name="Maintenance" component={ManutencaoScreen} />
@@ -64,6 +66,7 @@ const Routes = () => {
           name="RegistrationTeacher"
           component={RegistroProfessor}
         />
+        <Tab.Screen name='RegistrationSector' component={RegistarSetor} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextButton,
 } from "./Styles.js"; // Aliased TextInput import
-import { TextInput } from "react-native-gesture-handler";
 
 export default function RegistroProfessor() {
   const [nomeProfessor, setNomeProfessor] = useState("");
