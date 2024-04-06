@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StatusBar,
   Button,
@@ -7,12 +7,14 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import ProfileImage from '../../components/profilePicture';
 
-export default function Home({ route }) {
+export default function Home({route}) {
+  const {name, email, photo, roles} = route.params;
   const navigation = useNavigation();
   const solicitarManutencao = () => {
-    navigation.navigate('Maintenance');
+    navigation.navigate('Maintenance', {email: email});
     console.log('Solicitando manutenção...');
   };
   const solicitarCadastroProfessor = () => {
@@ -21,26 +23,26 @@ export default function Home({ route }) {
   };
 
   const vincularGestorEspaço = () => {
-    navigation.navigate('LinkManagersSpace')
-    console.log('Solicitando cadastro do Gestor ao espaço')
+    navigation.navigate('LinkManagersSpace');
+    console.log('Solicitando cadastro do Gestor ao espaço');
   };
 
-  const RegistarSetor = () =>{
-    navigation.navigate('RegistrationSector')
-    console.log('Solicitando cadastro de setor')
-  }
+  const RegistarSetor = () => {
+    navigation.navigate('RegistrationSector');
+    console.log('Solicitando cadastro de setor');
+  };
 
-  /*  const { name, email, photo, roles } = route.params;
- 
-   const [userName, setUserName] = useState(name);
-   //console.log(userlogin);
-   console.log(roles); */
+  const [userName, setUserName] = useState(name);
+  //console.log(userlogin);
+  console.log(roles);
   return (
     <View style={styles.container}>
+      <ProfileImage source={photo} />
       <Text> </Text>
       <Text> </Text>
+
       {/*    <Text>{`${roles}`} </Text> */}
-      <Text style={styles.title}>Bem Vindo</Text>
+      <Text style={styles.title}>Bem Vindo {`${userName}`}</Text>
       {/* <Text style={styles.container}>{`${userName}`}</Text> */}
 
       <TouchableOpacity
@@ -53,16 +55,11 @@ export default function Home({ route }) {
         <Text style={styles.buttonText}>Solicitar Manutenção</Text>
       </TouchableOpacity>
 
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={vincularGestorEspaço}>
+      <TouchableOpacity style={styles.button} onPress={vincularGestorEspaço}>
         <Text style={styles.buttonText}>Vincular Gestor de Espaço</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={RegistarSetor}>
+      <TouchableOpacity style={styles.button} onPress={RegistarSetor}>
         <Text style={styles.buttonText}>Cadastrar setor</Text>
       </TouchableOpacity>
     </View>

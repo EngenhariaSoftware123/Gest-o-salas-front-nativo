@@ -23,10 +23,8 @@ const Login = () => {
   async function onGoogleButtonPress() {
     try {
       GoogleSignin.configure({
-        webClientId:
-          '',
-        androidClientId:
-          '',
+        webClientId: '',
+        androidClientId: '',
       });
       await GoogleSignin.signOut();
       // Verifica se o dispositivo suporta os serviços do Google Play
@@ -55,7 +53,7 @@ const Login = () => {
       setRoles(response.data);
       navigation.navigate('Home', {
         email: user.email,
-        name: user.name,
+        name: user.givenName,
         photo: user.photo,
         roles: response.data.roles,
       });
@@ -87,7 +85,7 @@ const Login = () => {
         </View>
         <TouchableOpacity
           onPress={async () => {
-            onGoogleButtonPress();
+            await onGoogleButtonPress(); // Espera a conclusão da função onGoogleButtonPress()
           }}
           disabled={loading}>
           <Image
@@ -95,6 +93,7 @@ const Login = () => {
             style={styles.imgLogin}
           />
         </TouchableOpacity>
+
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </ImageBackground>
     </View>
