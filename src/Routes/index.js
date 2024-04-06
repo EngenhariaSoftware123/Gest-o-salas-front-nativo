@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, {useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -12,8 +12,8 @@ import Home from '../screens/Home/Home';
 import ManutencaoScreen from '../screens/Maintenance/Maintenance';
 import RegistroProfessor from '../screens/RegistrationTeacher/RegistrationTeacher';
 import TabRoutes from './tab.routes';
-import vincularGestorEspaço from '../screens/LinkManagersSpace/LinkManagersSpace'
-import RegistarSetor from '../screens/RegistrationSector/RegistrationSector'
+import vincularGestorEspaço from '../screens/LinkManagersSpace/LinkManagersSpace';
+import RegistarSetor from '../screens/RegistrationSector/RegistrationSector';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -29,8 +29,7 @@ const TabBar = () => {
 const Routes = () => {
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId:
-        '377017939708-ni2in93upntrr2oescbu2va00cg3pnj0.apps.googleusercontent.com',
+      webClientId: '',
       offlineAccess: true,
     });
   }, []);
@@ -56,17 +55,16 @@ const Routes = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login"
-        screenOptions={{ headerShown: false }}>
-        {/*  <Stack.Screen name="Login" component={Login} /> */}
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{headerShown: false}}>
+        {<Stack.Screen name="Login" component={Login} />}
         <Stack.Screen name="MainApp" component={TabBar} />
         <Stack.Screen name="App" component={TabRoutes} />
         <Tab.Screen name="Maintenance" component={ManutencaoScreen} />
-        <Tab.Screen
-          name="RegistrationTeacher"
-          component={RegistroProfessor}
-        />
-        <Tab.Screen name='RegistrationSector' component={RegistarSetor} />
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="RegistrationTeacher" component={RegistroProfessor} />
+        <Tab.Screen name="RegistrationSector" component={RegistarSetor} />
       </Stack.Navigator>
     </NavigationContainer>
   );

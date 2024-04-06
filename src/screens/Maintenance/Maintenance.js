@@ -1,21 +1,58 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
-  TextInput,
-  Button,
   StyleSheet,
+  TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
+import axios from 'axios';
+import {Picker} from '@react-native-picker/picker';
 
-export default function ManutencaoScreen() {
-  const [local, setLocal] = useState('');
+export default function ManutencaoScreen({route}) {
+  const [selectedSpaceId, setSelectedSpaceId] = useState('');
+  const [selectedSpaceName, setSelectedSpaceName] = useState('');
   const [descricao, setDescricao] = useState('');
-
+  const [spaces, setSpaces] = useState([]);
+  const {email} = route.params;
+  useEffect(() => {
+    console.log(email);
+    axios
+      .get('https://gestao-de-espaco-api.onrender.com/space/get-spaces')
+      .then(function (response) {
+        console.log(response.data);
+        setSpaces(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+  const handleSpaceChange = (spaceId, spaceName) => {
+    setSelectedSpaceId(spaceId);
+    setSelectedSpaceName(spaceName);
+  };
   const salvarManutencao = () => {
-    // Aqui você pode adicionar a lógica para salvar os detalhes da manutenção
-    console.log('Local:', local);
-    console.log('Descrição:', descricao);
+    axios
+      .post(
+        'https://gestao-de-espaco-api.onrender.com/maintenance/create-maintenance',
+        {
+          email: email,
+          spaceId: selectedSpaceId,
+          description: descricao,
+        },
+      )
+      .then(function (response) {
+        Alert.alert(`manuntenção cadastrada`);
+      })
+      .catch(function (error) {
+        Alert.alert(
+          'Erro',
+          'ocorreu um erro manuntenção não cadastrada',
+          [{text: 'OK', onPress: () => {}}],
+          {cancelable: false},
+        );
+      });
     // Implemente a lógica para salvar no banco de dados ou fazer uma solicitação para o servidor
   };
 
@@ -23,12 +60,26 @@ export default function ManutencaoScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Solicitar Manutenção</Text>
       <Text style={styles.label}>Local:</Text>
-      <TextInput
+      <Picker
+        selectedValue={selectedSpaceId}
         style={styles.input}
-        placeholder="Digite o local da manutenção"
-        value={local}
-        onChangeText={text => setLocal(text)}
-      />
+        onValueChange={(itemValue, itemIndex) =>
+          handleSpaceChange(itemValue, spaces[itemIndex - 1].space.name)
+        }>
+        <Picker.Item label="Selecione o local" value="" />
+        {spaces.map(space => (
+          <Picker.Item
+            key={space.space.id}
+            label={space.space.name}
+            value={space.space.id}
+          />
+        ))}
+      </Picker>
+      {selectedSpaceName ? (
+        <Text style={styles.selectedText}>
+          Espaço selecionado: {selectedSpaceName}
+        </Text>
+      ) : null}
 
       <Text style={styles.label}>Descrição do Problema:</Text>
       <TextInput
@@ -39,7 +90,7 @@ export default function ManutencaoScreen() {
         onChangeText={text => setDescricao(text)}
       />
 
-      <TouchableOpacity style={styles.button} onPress={ManutencaoScreen}>
+      <TouchableOpacity style={styles.button} onPress={salvarManutencao}>
         <Text style={styles.buttonText}>Solicitar Manutenção</Text>
       </TouchableOpacity>
     </View>
@@ -68,7 +119,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-
     marginTop: 20,
   },
   button: {
