@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   Container,
   TextTitle,
@@ -6,21 +6,36 @@ import {
   StyledTextInput,
   TouchableOpacity,
   TextButton,
-} from "./Styles.js"; // Aliased TextInput import
+  DropdownButtonStyle,
+  DropdownButtonIconStyle,
+  DropdownItemStyle,
+  DropdownItemTxtStyle,
+  DropdownButtonTxtStyle,
+} from './Styles.js';
+import SelectDropdown from 'react-native-select-dropdown';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function RegistroProfessor() {
-  const [nomeProfessor, setNomeProfessor] = useState("");
-  const [numeroDaMatricula, setNumeroDaMatricula] = useState("");
-  const [departamento, setDepartamento] = useState("");
-  const [numeroCelular, setNumeroCelular] = useState("");
-  const [emailProfessor, setEmailProfessor] = useState("");
+  const Departamento = [
+    {title: 'DCT'},
+    {title: 'DS I'},
+    {title: 'DS II'},
+    {title: 'DCHL'},
+    {title: 'DCB'},
+  ];
+
+  const [nomeProfessor, setNomeProfessor] = useState('');
+  const [numeroDaMatricula, setNumeroDaMatricula] = useState('');
+  const [departamento, setDepartamento] = useState('');
+  const [numeroCelular, setNumeroCelular] = useState('');
+  const [emailProfessor, setEmailProfessor] = useState('');
 
   const salvarProfessor = () => {
-    console.log("Nome do Professor: ", nomeProfessor);
-    console.log("Numero da matrícula: ", numeroDaMatricula);
-    console.log("Departamento: ", departamento);
-    console.log("Número do celular", numeroCelular);
-    console.log("E-mail do Professol", emailProfessor);
+    console.log('Nome do Professor: ', nomeProfessor);
+    console.log('Numero da matrícula: ', numeroDaMatricula);
+    console.log('Departamento: ', departamento);
+    console.log('Número do celular', numeroCelular);
+    console.log('E-mail do Professor', emailProfessor);
   };
 
   return (
@@ -31,34 +46,59 @@ export default function RegistroProfessor() {
         multiline
         placeholder="Digite o nome do professor"
         value={nomeProfessor}
-        onChangeText={(text) => setNomeProfessor(text)}
+        onChangeText={text => setNomeProfessor(text)}
       />
-
       <TextLabel>Matrícula do Professor</TextLabel>
       <StyledTextInput
         multiline
         placeholder="Matrícula do professor"
-        value={nomeProfessor}
-        onChangeText={(text) => numeroDaMatricula(text)}
+        value={numeroDaMatricula}
+        onChangeText={text => setNumeroDaMatricula(text)}
+      />
+      <TextLabel>Departamento:</TextLabel>
+      <SelectDropdown
+        data={Departamento}
+        onSelect={(selectedItem, index) => {
+          setDepartamento(selectedItem.title);
+        }}
+        renderButton={(selectedItem, isOpened) => {
+          return (
+            <DropdownButtonStyle>
+              <DropdownButtonIconStyle>
+                {isOpened ? '▲' : '▼'}
+              </DropdownButtonIconStyle>
+              <DropdownButtonTxtStyle>
+                {(departamento && departamento) || 'Escolha o departamento:'}
+              </DropdownButtonTxtStyle>
+            </DropdownButtonStyle>
+          );
+        }}
+        renderItem={(item, index, isSelected) => {
+          return (
+            <DropdownItemStyle
+              style={{...(isSelected && {backgroundColor: '#D2D9DF'})}}>
+              <DropdownItemTxtStyle>{item.title}</DropdownItemTxtStyle>
+            </DropdownItemStyle>
+          );
+        }}
+        showsVerticalScrollIndicator={false}
       />
 
       <TextLabel>Contato do Professor</TextLabel>
       <StyledTextInput
         multiline
         placeholder="Celular/Telefone"
-        value={setNumeroCelular}
-        onChangeText={(text) => setNumeroCelular(text)}
+        value={numeroCelular}
+        onChangeText={text => setNumeroCelular(text)}
       />
-
       <TextLabel>Email do Professor</TextLabel>
       <StyledTextInput
         multiline
         placeholder="Matrícula do professor"
         value={emailProfessor}
-        onChangeText={(text) => setEmailProfessor(text)}
+        onChangeText={text => setEmailProfessor(text)}
       />
-
-      <TouchableOpacity onPress={RegistroProfessor}>
+      <TouchableOpacity onPress={salvarProfessor}>
         <TextButton>Cadastrar Professor</TextButton>
       </TouchableOpacity>
     </Container>

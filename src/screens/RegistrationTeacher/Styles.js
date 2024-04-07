@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { TextInput } from "react-native-gesture-handler";
+import styled from 'styled-components';
+import {TextInput} from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;
@@ -13,10 +13,7 @@ export const TextTitle = styled.Text`
   text-align: center;
 `;
 
-export const TextLabel = styled.Text`
-  font-weight: 20px;
-  margin-top: 10px;
-`;
+export const TextLabel = styled.Text``;
 
 export const StyledTextInput = styled.TextInput`
   height: 100xp;
@@ -40,4 +37,43 @@ export const TextButton = styled.Text`
   font-size: 16px;
   font-weight: bold;
   text-align: center;
+`;
+
+export const DropdownButtonStyle = styled.View`
+  width: 200px;
+  height: 50;
+  background-color: '#E9ECEF';
+  border-radius: 12px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+`;
+
+export const DropdownButtonIconStyle = styled.Text`
+  font-size: 20px;
+  margin-right: 8px;
+`;
+
+export const DropdownButtonTxtStyle = styled.Text`
+  flex: 1px;
+  font-size: 18px;
+  font-weight: 500px;
+  color: '#151E26';
+`;
+
+export const DropdownItemStyle = styled.View`
+  width: 100%;
+  flex-direction: row;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+`;
+
+export const DropdownItemTxtStyle = styled.Text`
+  flex: 1px;
+  font-size: 18px;
+  font-weight: 500px;
+  color: '#151E26';
 `;

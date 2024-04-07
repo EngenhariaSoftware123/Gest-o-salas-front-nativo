@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import Icon from 'react-native-vector-icons/Feather';
 import Home from '../screens/Home/Home';
 import Space from '../screens/Space/Space';
@@ -24,20 +25,12 @@ export default function TabRoutes() {
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
       />
-      <Tab.Screen
-        name="Space"
-        component={Space}
-        options={{
-          tabBarIcon: tabBarIcon('bold'),
-          tabBarLabel: 'Space',
-        }}
-      />
+
       <Tab.Screen
         name="Consult"
         component={Consult}
@@ -46,7 +39,7 @@ export default function TabRoutes() {
           tabBarLabel: 'Consult',
         }}
       />
-      <Tab.Screen
+       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
@@ -55,7 +48,7 @@ export default function TabRoutes() {
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
-      />
+      /> 
     </Tab.Navigator>
   );
 }

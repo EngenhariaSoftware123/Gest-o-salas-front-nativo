@@ -16,6 +16,7 @@ export default function ManutencaoScreen({route}) {
   const [descricao, setDescricao] = useState('');
   const [spaces, setSpaces] = useState([]);
   const {email} = route.params;
+  
   useEffect(() => {
     console.log(email);
     axios
