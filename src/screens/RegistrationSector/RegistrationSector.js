@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   Container,
   TextTitle,
@@ -6,27 +6,27 @@ import {
   StyledTextInput,
   TouchableOpacity,
   TextButton,
-} from "./Styles.js"; // Aliased TextInput import
-import { TextInput } from "react-native-gesture-handler";
-import styled from "styled-components/native";
+} from './Styles.js'; // Aliased TextInput import
+import {ScrollView} from 'react-native';
+import styled from 'styled-components/native';
 
 const StyledTextInputSigla = styled(StyledTextInput)`
-  width: 65px; 
+  width: 65px;
 `;
 
 export default function RegistroSetor() {
-  const [Local, setLocal] = useState("");
-  const [NomeSetor, setNomeSetor] = useState("");
-  const [NumeroCelular, setNumeroCelular] = useState("");
-  const [Email, setEmail] = useState("");
-  const [Sigla, setSigla] = useState("");
+  const [Local, setLocal] = useState('');
+  const [NomeSetor, setNomeSetor] = useState('');
+  const [NumeroCelular, setNumeroCelular] = useState('');
+  const [Email, setEmail] = useState('');
+  const [Sigla, setSigla] = useState('');
 
   const salvarSetor = () => {
-    console.log("Localização: ", Local);
-    console.log("Nome do Setor: ", NomeSetor);
-    console.log("Número do celular", NumeroCelular);
-    console.log("E-mail", Email);
-    console.log("Sigla: ", Sigla);
+    console.log('Localização: ', Local);
+    console.log('Nome do Setor: ', NomeSetor);
+    console.log('Número do celular', NumeroCelular);
+    console.log('E-mail', Email);
+    console.log('Sigla: ', Sigla);
   };
 
   return (
@@ -38,14 +38,14 @@ export default function RegistroSetor() {
           multiline
           placeholder="Digite a Localização"
           value={Local}
-          onChangeText={(text) => setLocal(text)}
+          onChangeText={text => setLocal(text)}
         />
         <TextLabel>Nome do Setor</TextLabel>
         <StyledTextInput
           multiline
           placeholder="Digite o nome do Setor"
           value={NomeSetor}
-          onChangeText={(text) => setNomeSetor(text)}
+          onChangeText={text => setNomeSetor(text)}
         />
 
         <TextLabel>Sigla do Setor</TextLabel>
@@ -53,7 +53,7 @@ export default function RegistroSetor() {
           multiline
           placeholder="Sigla"
           value={Sigla}
-          onChangeText={(text) => setSigla(text)}
+          onChangeText={text => setSigla(text)}
         />
 
         <TextLabel>Número para Contato</TextLabel>
@@ -61,8 +61,7 @@ export default function RegistroSetor() {
           multiline
           placeholder="Celular/Telefone"
           value={NumeroCelular}
-          onChangeText={(text) => setNumeroCelular(text)}
-
+          onChangeText={text => setNumeroCelular(text)}
         />
 
         <TextLabel>Email</TextLabel>
@@ -70,7 +69,7 @@ export default function RegistroSetor() {
           multiline
           placeholder="Digite aqui"
           value={Email}
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={text => setEmail(text)}
         />
 
         <TouchableOpacity onPress={RegistroSetor}>
@@ -78,6 +77,5 @@ export default function RegistroSetor() {
         </TouchableOpacity>
       </Container>
     </ScrollView>
-
   );
 }

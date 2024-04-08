@@ -9,6 +9,9 @@ import {
   TextInput,
 } from 'react-native';
 
+import {TextTitle} from './Styles';
+import CheckBox from '../../components/CheckBox';
+
 export default function Space() {
   const [nomeEspaco, setNomeEspaco] = useState('');
   const [localizacao, setLocalizacao] = useState('');
@@ -38,12 +41,18 @@ export default function Space() {
       });
   };
 
+  const optionsMultiple = [
+    {text: 'Rampa de Acesso', id: 1},
+    {text: 'Piso Tátil.', id: 2},
+    {text: 'Carteira Especial: Obeso', id: 3},
+  ];
+
   return (
     <ScrollView
       contentContainerStyle={localStyles.container}
       keyboardShouldPersistTaps="handled">
       <View>
-        <Text style={localStyles.text}>Cadastrar espaço</Text>
+        <TextTitle>Cadastrar espaço</TextTitle>
         <TextInput
           onChangeText={text => setNomeEspaco(text)}
           value={nomeEspaco}
@@ -80,13 +89,17 @@ export default function Space() {
           />
         </View>
 
-        <Text style={localStyles.text}>Recursos disponíveis:</Text>
+        <TextTitle>Recursos disponíveis:</TextTitle>
+        <CheckBox
+          options={optionsMultiple}
+          /* onChange={op => alert(op)}  */
+          multiple
+        />
 
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginTop: 230,
           }}>
           <TouchableOpacity onPress={handleSubmit} style={localStyles.button}>
             <Text style={localStyles.buttonText}>Cadastrar</Text>
@@ -99,6 +112,7 @@ export default function Space() {
     </ScrollView>
   );
 }
+
 const localStyles = StyleSheet.create({
   container: {
     justifyContent: 'center',
