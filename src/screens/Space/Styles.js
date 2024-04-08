@@ -1,28 +1,25 @@
-import styled from 'styled-components/native';
+import styled from 'styled-components';
 
-export const View = styled.View`
+export const Container = styled.View`
   flex: 1;
   align-items: center;
   background-color: #fff;
 `;
 
-export const Text = styled.Text`
-  font-size: 24px;
-  margin-top: 50px; /* Alterado de margin-bottom para margin-top */
-`;
-
-export const TextInput = styled.TextInput`
-  /* Adicione estilos para TextInput aqui, se necessário */
-  align-self: flex-start;
-  margin-top: 35px;
-  margin-left: 30px;
-  padding: 10px;
-  padding-right: 40px;
-
+export const TextTitle = styled.Text`
   font-size: 20px;
-
-  border: 2px solid black;
-  border-radius: 13px;
+  font-weight: bold;
+  text-align: center; /* Alterado de margin-bottom para margin-top */
 `;
 
-export const Button = styled.Button``;
+export const TextLabel = styled.Text`
+  font-weight: 20px;
+  margin-top: 10px;
+`;
+
+export const TouchableOpacity = styled.TouchableOpacity`
+  background: #007aff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+`;

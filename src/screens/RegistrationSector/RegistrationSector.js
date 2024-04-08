@@ -30,51 +30,54 @@ export default function RegistroSetor() {
   };
 
   return (
-    <Container>
-      <TextTitle>Cadastrar Setor</TextTitle>
-      <TextLabel>Localização</TextLabel>
-      <StyledTextInput
-        multiline
-        placeholder="Digite a Localização"
-        value={Local}
-        onChangeText={(text) => setLocal(text)}
-      />
-      <TextLabel>Nome do Setor</TextLabel>
-      <StyledTextInput
-        multiline
-        placeholder="Digite o nome do Setor"
-        value={NomeSetor}
-        onChangeText={(text) => setNomeSetor(text)}
-      />
+    <ScrollView>
+      <Container>
+        <TextTitle>Cadastrar Setor</TextTitle>
+        <TextLabel>Localização</TextLabel>
+        <StyledTextInput
+          multiline
+          placeholder="Digite a Localização"
+          value={Local}
+          onChangeText={(text) => setLocal(text)}
+        />
+        <TextLabel>Nome do Setor</TextLabel>
+        <StyledTextInput
+          multiline
+          placeholder="Digite o nome do Setor"
+          value={NomeSetor}
+          onChangeText={(text) => setNomeSetor(text)}
+        />
 
-      <TextLabel>Sigla do Setor</TextLabel>
-      <StyledTextInputSigla
-        multiline
-        placeholder="Sigla"
-        value={Sigla}
-        onChangeText={(text) => setSigla(text)}
-      />
+        <TextLabel>Sigla do Setor</TextLabel>
+        <StyledTextInputSigla
+          multiline
+          placeholder="Sigla"
+          value={Sigla}
+          onChangeText={(text) => setSigla(text)}
+        />
 
-      <TextLabel>Número para Contato</TextLabel>
-      <StyledTextInput
-        multiline
-        placeholder="Celular/Telefone"
-        value={NumeroCelular}
-        onChangeText={(text) => setNumeroCelular(text)}
-        
-      />
+        <TextLabel>Número para Contato</TextLabel>
+        <StyledTextInput
+          multiline
+          placeholder="Celular/Telefone"
+          value={NumeroCelular}
+          onChangeText={(text) => setNumeroCelular(text)}
 
-      <TextLabel>Email</TextLabel>
-      <StyledTextInput
-        multiline
-        placeholder="Digite aqui"
-        value={Email}
-        onChangeText={(text) => setEmail(text)}
-      />
+        />
 
-      <TouchableOpacity onPress={RegistroSetor}>
-        <TextButton>Cadastrar Setor</TextButton>
-      </TouchableOpacity>
-    </Container>
+        <TextLabel>Email</TextLabel>
+        <StyledTextInput
+          multiline
+          placeholder="Digite aqui"
+          value={Email}
+          onChangeText={(text) => setEmail(text)}
+        />
+
+        <TouchableOpacity onPress={RegistroSetor}>
+          <TextButton>Cadastrar Setor</TextButton>
+        </TouchableOpacity>
+      </Container>
+    </ScrollView>
+
   );
 }

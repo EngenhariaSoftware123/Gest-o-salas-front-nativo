@@ -6,6 +6,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import ProfileImage from '../../components/profilePicture';
@@ -13,6 +14,7 @@ import ProfileImage from '../../components/profilePicture';
 export default function Home({route}) {
   const {name, email, photo, roles} = route.params;
   const navigation = useNavigation();
+
   const solicitarManutencao = () => {
     navigation.navigate('Maintenance', {email: email});
     console.log('Solicitando manutenção...');
@@ -32,6 +34,7 @@ export default function Home({route}) {
     console.log('Solicitando cadastro de setor');
   };
 
+
   const verPerfil = () => {
     navigation.navigate('Profile', {
       email: email,
@@ -40,43 +43,52 @@ export default function Home({route}) {
       name: name,
     });
     console.log('Solicitando cadastro de setor');
+
+  const CadastrarEspaco = () => {
+    navigation.navigate('Space');
+    console.log('Solicantando cadastro de espaço');
+
   };
 
   const [userName, setUserName] = useState(name);
   //console.log(userlogin);
   console.log(roles);
   return (
-    <View style={styles.container}>
-      <ProfileImage source={photo} />
-      <Text> </Text>
-      <Text> </Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <ProfileImage source={photo} />
+        <Text> </Text>
+        <Text> </Text>
+        <Text>{`${roles}`} </Text>
+        <Text style={styles.title}>Bem Vindo {`${userName}`}</Text>
+        <Text style={styles.container}>{`${userName}`}</Text>
 
-      {/*    <Text>{`${roles}`} </Text> */}
-      <Text style={styles.title}>Bem Vindo {`${userName}`}</Text>
-      {/* <Text style={styles.container}>{`${userName}`}</Text> */}
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={solicitarCadastroProfessor}>
-        <Text style={styles.buttonText}>Cadastrar Professor</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={solicitarManutencao}>
-        <Text style={styles.buttonText}>Solicitar Manutenção</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={vincularGestorEspaço}>
-        <Text style={styles.buttonText}>Vincular Gestor de Espaço</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={RegistarSetor}>
-        <Text style={styles.buttonText}>Cadastrar setor</Text>
-      </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={verPerfil}>
         <Text style={styles.buttonText}>Meu perfil</Text>
       </TouchableOpacity>
     </View>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={solicitarCadastroProfessor}>
+          <Text style={styles.buttonText}>Cadastrar Professor</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={solicitarManutencao}>
+          <Text style={styles.buttonText}>Solicitar Manutenção</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={vincularGestorEspaço}>
+          <Text style={styles.buttonText}>Vincular Gestor ao Espaço</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={RegistarSetor}>
+          <Text style={styles.buttonText}>Cadastrar setor</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={CadastrarEspaco}>
+          <Text style={styles.buttonText}>Cadastrar Espaço</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+
   );
 }
 
