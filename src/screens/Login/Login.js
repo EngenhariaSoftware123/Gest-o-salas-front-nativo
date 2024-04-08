@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {useNavigation} from '@react-navigation/native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import axios from 'axios';
 
@@ -30,9 +30,9 @@ const Login = () => {
       });
       await GoogleSignin.signOut();
       // Verifica se o dispositivo suporta os serviços do Google Play
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
       // Obtém o token de ID do usuário
-      const { idToken, user } = await GoogleSignin.signIn();
+      const {idToken, user} = await GoogleSignin.signIn();
       // Navega para a tela Home com os dados do usuário como parâmetros
       // Verifica o domínio do e-mail
       if (!user.email.endsWith('@uesb.edu.br')) {
@@ -40,8 +40,8 @@ const Login = () => {
         Alert.alert(
           'Erro',
           'Apenas endereços de e-mail da UESB são permitidos.',
-          [{ text: 'OK', onPress: () => { } }],
-          { cancelable: false },
+          [{text: 'OK', onPress: () => {}}],
+          {cancelable: false},
         );
         return;
       }
@@ -59,9 +59,6 @@ const Login = () => {
         photo: user.photo,
         roles: response.data.roles,
       });
-
-      
-      
       setUserLogged(user);
       const googleCredential = await auth.GoogleAuthProvider.credential(
         idToken,
