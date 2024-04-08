@@ -34,7 +34,6 @@ export default function Home({route}) {
     console.log('Solicitando cadastro de setor');
   };
 
-
   const verPerfil = () => {
     navigation.navigate('Profile', {
       email: email,
@@ -43,11 +42,10 @@ export default function Home({route}) {
       name: name,
     });
     console.log('Solicitando cadastro de setor');
-
+  };
   const CadastrarEspaco = () => {
     navigation.navigate('Space');
     console.log('Solicantando cadastro de espaço');
-
   };
 
   const [userName, setUserName] = useState(name);
@@ -63,12 +61,11 @@ export default function Home({route}) {
         <Text style={styles.title}>Bem Vindo {`${userName}`}</Text>
         <Text style={styles.container}>{`${userName}`}</Text>
 
-
-      <TouchableOpacity style={styles.button} onPress={verPerfil}>
-        <Text style={styles.buttonText}>Meu perfil</Text>
-      </TouchableOpacity>
-    </View>
-
+        <TouchableOpacity style={styles.button} onPress={verPerfil}>
+          <Text style={styles.buttonText}>Meu perfil</Text>
+        </TouchableOpacity>
+      </View>
+      <View>
         <TouchableOpacity
           style={styles.button}
           onPress={solicitarCadastroProfessor}>
@@ -88,7 +85,6 @@ export default function Home({route}) {
         </TouchableOpacity>
       </View>
     </ScrollView>
-
   );
 }
 
