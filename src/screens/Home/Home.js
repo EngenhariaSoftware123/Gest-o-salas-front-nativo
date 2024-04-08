@@ -32,6 +32,16 @@ export default function Home({route}) {
     console.log('Solicitando cadastro de setor');
   };
 
+  const verPerfil = () => {
+    navigation.navigate('Profile', {
+      email: email,
+      roles: roles,
+      photo: photo,
+      name: name,
+    });
+    console.log('Solicitando cadastro de setor');
+  };
+
   const [userName, setUserName] = useState(name);
   //console.log(userlogin);
   console.log(roles);
@@ -61,6 +71,10 @@ export default function Home({route}) {
 
       <TouchableOpacity style={styles.button} onPress={RegistarSetor}>
         <Text style={styles.buttonText}>Cadastrar setor</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={verPerfil}>
+        <Text style={styles.buttonText}>Meu perfil</Text>
       </TouchableOpacity>
     </View>
   );

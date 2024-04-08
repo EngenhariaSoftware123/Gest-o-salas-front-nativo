@@ -1,7 +1,7 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -15,10 +15,10 @@ import TabRoutes from './tab.routes';
 import vincularGestorEspaco from '../screens/LinkManagersSpace/LinkManagersSpace';
 import RegistarSetor from '../screens/RegistrationSector/RegistrationSector';
 import DrawerTab from './Drawer';
+import Feed from '../screens/Profile/Profile';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
 
 const Routes = () => {
   /*  useEffect(() => {
@@ -51,14 +51,22 @@ const Routes = () => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Login"
-        screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name="Login" component={Login} /> */}
-        <Stack.Screen name='Drawer' component={DrawerTab} />
+        screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Drawer" component={DrawerTab} />
+        <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="MainApp" component={TabRoutes} />
         <Stack.Screen name="Maintenance" component={ManutencaoScreen} />
-        <Stack.Screen name="RegistrationTeacher" component={RegistroProfessor} />
-        <Stack.Screen name="LinkManagersSpace" component={vincularGestorEspaco} />
+        <Stack.Screen
+          name="RegistrationTeacher"
+          component={RegistroProfessor}
+        />
+        <Stack.Screen
+          name="LinkManagersSpace"
+          component={vincularGestorEspaco}
+        />
         <Stack.Screen name="RegistrationSector" component={RegistarSetor} />
+        <Stack.Screen name="Profile" component={Feed} />
       </Stack.Navigator>
     </NavigationContainer>
   );
