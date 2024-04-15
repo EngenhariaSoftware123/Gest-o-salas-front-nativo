@@ -20,6 +20,16 @@ export default function Space() {
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const handleSubmit = async () => {
+    console.log('Dados do espaço:', {
+      name: nomeEspaco,
+      pavilion: localizacao,
+      capacity: capacidade,
+      typeRoom: tipodesala,
+      acessibilty: ['cadeira reclinaveis'],
+      available_equipments: [{name: 'projetor', quantity: 4}],
+      selectedOptions: selectedOptions, // Adiciona os valores selecionados aqui
+    });
+
     axios
       .post('https://gestao-de-espaco-api.onrender.com/space/create-space', {
         data: {
@@ -29,6 +39,7 @@ export default function Space() {
           typeRoom: tipodesala,
           acessibilty: ['cadeira reclinaveis'],
           available_equipments: [{name: 'projetor', quantity: 4}],
+          selectedOptions: optionsMultiple, // Adiciona os valores selecionados aqui
         },
       })
       .then(response => {
@@ -92,7 +103,7 @@ export default function Space() {
         <TextTitle>Recursos disponíveis:</TextTitle>
         <CheckBox
           options={optionsMultiple}
-          /* onChange={op => alert(op)}  */
+          /* onChange={op => alert(op)} */
           multiple
         />
 

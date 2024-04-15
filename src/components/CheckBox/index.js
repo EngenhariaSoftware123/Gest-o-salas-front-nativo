@@ -2,8 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {View, TextTitle, TouchableOpacityStyle} from './Styles.js';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
-const CheckBox = ({options = [], onChange}, multiple = false) => {
+const CheckBox = ({options = [], onChange, multiple = false}) => {
   const [selected, setSelected] = useState([]);
+  console.log('Ícone:', Icon);
+
   function toggle(id) {
     let index = selected.findIndex(i => i === id); /*  */
 
@@ -16,8 +18,8 @@ const CheckBox = ({options = [], onChange}, multiple = false) => {
     setSelected(arrSelecteds);
   }
 
-  /*   useEffect(() => onChange(selected), [selected]); */
-
+  /* useEffect(() => onChange(selected), [selected]);
+ */
   return (
     <View>
       {options.map((op, index) => (
@@ -28,7 +30,7 @@ const CheckBox = ({options = [], onChange}, multiple = false) => {
             }
             onPress={() => toggle(op?.id)}>
             {selected.findIndex(i => i === op.id) !== -1 ? (
-              <Icon name="check-bold" color={'#red'} size={16} />
+              <Icon name="check-bold" color={'green'} size={16} />
             ) : null}
           </TouchableOpacityStyle>
           <TextTitle>{op?.text}</TextTitle>
