@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
 const CheckBox = ({options = [], onChange, multiple = false}) => {
   const [selected, setSelected] = useState([]);
-  console.log('Ícone:', Icon);
 
   function toggle(id) {
     let index = selected.findIndex(i => i === id); /*  */
@@ -19,7 +18,7 @@ const CheckBox = ({options = [], onChange, multiple = false}) => {
   }
 
   /* useEffect(() => onChange(selected), [selected]);
- */
+   */
   return (
     <View>
       {options.map((op, index) => (
