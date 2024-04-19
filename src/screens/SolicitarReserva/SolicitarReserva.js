@@ -1,30 +1,48 @@
 import React, {useState, useEffect} from 'react';
-import axios, {isCancel, AxiosError} from 'axios';
-import {Alert, Button, ScrollView} from 'react-native';
-
+import axios from 'axios';
+import {Alert, ScrollView} from 'react-native';
 import {
   TextTitle,
   View,
   TouchableOpacity,
   ButtonText,
   ButtonContainer,
-  CalentarioButton,
+  TextLabel,
 } from './Styles';
 import CheckBox from '../../components/CheckBox';
 import {Picker} from '@react-native-picker/picker';
-import DatePicker from 'react-native-date-picker';
+import {Calendar} from 'react-native-calendars';
 
 export default function SolicitarReserva() {
   const [pavilhaoID, setPavilhaoID] = useState([]);
   const [selectedSpaceId, setSelectedSpaceId] = useState('');
   const [spaces, setSpaces] = useState([]);
-  const [sala, setSala] = useState([]);
-  const [horarios, setHorarios] = useState('');
-  const [data, setData] = useState('');
-  /* const [keyboardOffset, setKeyboardOffset] = useState(0); */
 
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
+  const [horarios, setHorarios] = useState('');
+  const [dataInicio, setDataInicio] = useState(null);
+  const [dataFinal, setDataFinal] = useState(null);
+
+  const handleDayPress = day => {
+    const selectedDate = new Date(day.dateString);
+    const today = new Date();
+
+    if (selectedDate < today) {
+      Alert.alert(
+        'Atenção',
+        'Você não pode selecionar datas anteriores à data atual.',
+      );
+      return;
+    }
+
+    if (!dataInicio) {
+      setDataInicio(day.dateString);
+    } else if (!dataFinal) {
+      setDataFinal(day.dateString);
+    } else {
+      setDataInicio(day.dateString);
+      setDataFinal(null);
+    }
+  };
 
   useEffect(() => {
     axios
@@ -45,11 +63,12 @@ export default function SolicitarReserva() {
   const salvarReserva = () => {
     axios
       .post(
-        'https://gestao-de-espaco-api.onrender.com/SolicitarReserva/create-SolicitarReserva',
+        'https://gestao-de-espaco-api.onrender.com/space/create-space-request',
         {
-          horarios: horarios,
-          data: data,
-          selectedOptions: optionsMultiple,
+          /*   horarios: horarios, */
+          spaceId: selectedSpaceId,
+          dataInicio: dataInicio,
+          dataFinal: dataFinal,
         },
       )
       .then(function (response) {
@@ -65,22 +84,17 @@ export default function SolicitarReserva() {
       });
   };
 
-  const optionsMultiple = [
-    {text: 'Professor', id: 1},
-    {text: 'Setor', id: 2},
-    {text: 'Terceiros', id: 3},
-  ];
+  console.log('Inicio:', dataInicio);
+  console.log('final:', dataFinal);
 
   return (
     <ScrollView>
       <View>
         <TextTitle>Solicitar espaço</TextTitle>
-
         <Picker>
           <Picker.Item label="Selecione o pavilhão" value="" />
         </Picker>
         <Picker
-          selectedValue={selectedSpaceId}
           onValueChange={(itemValue, itemIndex) =>
             handleSpaceChange(itemValue, spaces[itemIndex - 1].space.name)
           }>
@@ -94,27 +108,29 @@ export default function SolicitarReserva() {
           ))}
         </Picker>
 
-        <CalentarioButton title="Selecione a Data" onPress={() => setOpen(true)} />
-        <DatePicker
-          modal
-          open={open}
-          date={date}
-          onConfirm={date => {
-            setOpen(false);
-            setDate(date);
-          }}
-          onCancel={() => {
-            setOpen(false);
+        <Calendar
+          markingType={'multi-dot'}
+          onDayPress={handleDayPress}
+          markedDates={{
+            [dataInicio]: {
+              dots: [{key: 'inicio', color: 'blue'}],
+              selected: true,
+              disableTouchEvent: true,
+              selectedDotColor: 'orange',
+            },
+            [dataFinal]: {
+              dots: [{key: 'final', color: 'red'}],
+              selected: true,
+              disableTouchEvent: true,
+              selectedDotColor: 'orange',
+              color: 'red',
+            },
           }}
         />
-
-        <CheckBox options={optionsMultiple} />
-
         <ButtonContainer>
           <TouchableOpacity onPress={salvarReserva}>
             <ButtonText>Cadastrar</ButtonText>
           </TouchableOpacity>
-
           <TouchableOpacity onPress={() => {}}>
             <ButtonText>Cancelar</ButtonText>
           </TouchableOpacity>

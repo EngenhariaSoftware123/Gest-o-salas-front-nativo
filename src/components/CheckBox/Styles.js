@@ -22,3 +22,4 @@ export const TouchableOpacityStyle = styled.TouchableOpacity`
   border-color: '#3EBD93';
   border-width: 2;
 `;
+
