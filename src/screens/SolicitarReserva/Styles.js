@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {Picker} from '@react-native-picker/picker';
+import DatePicker from 'react-native-date-picker';
 
 export const View = styled.View`
   flex: 1;
@@ -36,11 +37,10 @@ export const ButtonContainer = styled.View`
   margin-bottom: 20px;
 `;
 
-export const CalentarioButton = styled.Button``;
-
 export const TextLabel = styled.Text`
   color: black;
   font-size: 20px;
   font-weight: 20px;
   margin-top: 30px;
 `;
+

@@ -17,7 +17,6 @@ export default function Space() {
   const [localizacao, setLocalizacao] = useState('');
   const [capacidade, setCapacidade] = useState(0);
   const [tipodesala, setTipodeSala] = useState('');
-  const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const handleSubmit = async () => {
     axios

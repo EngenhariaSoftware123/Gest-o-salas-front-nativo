@@ -7,24 +7,27 @@ import {
   TouchableOpacity,
   ButtonText,
   ButtonContainer,
-  TextLabel,
 } from './Styles';
-import CheckBox from '../../components/CheckBox';
 import {Picker} from '@react-native-picker/picker';
 import {Calendar} from 'react-native-calendars';
+import DatePicker from 'react-native-date-picker';
 
 export default function SolicitarReserva() {
-  const [pavilhaoID, setPavilhaoID] = useState([]);
+  const [selectedPavilhaoId, setselectedPavilhaoId] = useState('');
   const [selectedSpaceId, setSelectedSpaceId] = useState('');
   const [spaces, setSpaces] = useState([]);
 
-  const [horarios, setHorarios] = useState('');
+  const [horario, setHorario] = useState(new Date());
+  const [horarioDate, setHorarioDate] = useState(new Date());
   const [dataInicio, setDataInicio] = useState(null);
   const [dataFinal, setDataFinal] = useState(null);
 
   const handleDayPress = day => {
     const selectedDate = new Date(day.dateString);
     const today = new Date();
+
+    // Configurar a hora de hoje para 00:00:00 para comparar apenas a data
+    today.setHours(0, 0, 0, 0);
 
     if (selectedDate < today) {
       Alert.alert(
@@ -44,6 +47,11 @@ export default function SolicitarReserva() {
     }
   };
 
+  const handleHorarioChange = newDate => {
+    setHorario(newDate);
+    console.log('Horário:', newDate.getHours() + ':' + newDate.getMinutes());
+  };
+
   useEffect(() => {
     axios
       .get('https://gestao-de-espaco-api.onrender.com/space/get-spaces')
@@ -55,20 +63,22 @@ export default function SolicitarReserva() {
         console.log(error);
       });
   }, []);
-  const handleSpaceChange = (spaceId, spaceName) => {
-    setSelectedSpaceId(spaceId);
-    setSelectedSpaceName(spaceName);
-  };
 
   const salvarReserva = () => {
+    if (!selectedSpaceId || !dataInicio || !dataFinal || !selectedPavilhaoId) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
+      return;
+    }
+
     axios
       .post(
         'https://gestao-de-espaco-api.onrender.com/space/create-space-request',
         {
-          /*   horarios: horarios, */
-          spaceId: selectedSpaceId,
-          dataInicio: dataInicio,
-          dataFinal: dataFinal,
+          date: {
+            time: horario.getHours() + ':' + horario.getMinutes(),
+            initial_Period: dataInicio,
+            end_Period: dataFinal,
+          },
         },
       )
       .then(function (response) {
@@ -86,18 +96,29 @@ export default function SolicitarReserva() {
 
   console.log('Inicio:', dataInicio);
   console.log('final:', dataFinal);
+  console.log('\nhorario', horario);
+  console.log(selectedSpaceId);
 
   return (
     <ScrollView>
       <View>
         <TextTitle>Solicitar espaço</TextTitle>
-        <Picker>
-          <Picker.Item label="Selecione o pavilhão" value="" />
-        </Picker>
         <Picker
-          onValueChange={(itemValue, itemIndex) =>
-            handleSpaceChange(itemValue, spaces[itemIndex - 1].space.name)
-          }>
+          selectedValue={selectedPavilhaoId}
+          onValueChange={itemValue => setselectedPavilhaoId(itemValue)}>
+          <Picker.Item label="Selecione o pavilhão" value="" />
+          {spaces.map(space => (
+            <Picker.Item
+              key={space.space.id}
+              label={space.space.pavilion}
+              value={space.space.id}
+            />
+          ))}
+        </Picker>
+
+        <Picker
+          selectedValue={selectedSpaceId}
+          onValueChange={itemValue => setSelectedSpaceId(itemValue)}>
           <Picker.Item label="Sala" value="" />
           {spaces.map(space => (
             <Picker.Item
@@ -108,6 +129,12 @@ export default function SolicitarReserva() {
           ))}
         </Picker>
 
+        <DatePicker
+          date={horario}
+          onDateChange={handleHorarioChange}
+          mode="time"
+          dividerColor="red"
+        />
         <Calendar
           markingType={'multi-dot'}
           onDayPress={handleDayPress}
@@ -127,6 +154,7 @@ export default function SolicitarReserva() {
             },
           }}
         />
+
         <ButtonContainer>
           <TouchableOpacity onPress={salvarReserva}>
             <ButtonText>Cadastrar</ButtonText>
