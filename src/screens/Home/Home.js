@@ -48,6 +48,14 @@ export default function Home({route}) {
     console.log('Solicantando cadastro de espaço');
   };
 
+  const ReservaSolicitar = () => {
+    navigation.navigate('SolicitarReserva');
+    console.log('Solictando Reserva');
+  };
+  const CancelarReserva = () => {
+    navigation.navigate('CancelarReserva');
+    console.log('Solictando Reserva');
+  };
   const [userName, setUserName] = useState(name);
   //console.log(userlogin);
   console.log(roles);
@@ -82,6 +90,12 @@ export default function Home({route}) {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={CadastrarEspaco}>
           <Text style={styles.buttonText}>Cadastrar Espaço</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={ReservaSolicitar}>
+          <Text style={styles.buttonText}>Solicitar Reserva</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={CancelarReserva}>
+          <Text style={styles.buttonText}>Cancerlar Reserva</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

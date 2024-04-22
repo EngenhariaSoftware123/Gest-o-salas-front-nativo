@@ -7,18 +7,66 @@ import {
   TouchableOpacity,
   ButtonText,
   ButtonContainer,
-} from './Styles';
+  ViewHorario,
+  ViewTextHorario,
+  TextHorario,
+} from './Styles'; // Importe o componente ViewHorario
 import {Picker} from '@react-native-picker/picker';
 import {Calendar} from 'react-native-calendars';
 import DatePicker from 'react-native-date-picker';
+
+import {LocaleConfig} from 'react-native-calendars';
+
+LocaleConfig.locales['pt-br'] = {
+  monthNames: [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro',
+  ],
+  monthNamesShort: [
+    'Jan.',
+    'Fev.',
+    'Mar',
+    'Abr',
+    'Mai',
+    'Jun',
+    'Jul.',
+    'Ago',
+    'Set.',
+    'Out.',
+    'Nov.',
+    'Dez.',
+  ],
+  dayNames: [
+    'Domingo',
+    'Segunda',
+    'Terça',
+    'Quarta',
+    'Quinta',
+    'Sexta',
+    'Sábado',
+  ],
+  dayNamesShort: ['Dom.', 'Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sáb.'],
+};
+
+LocaleConfig.defaultLocale = 'pt-br';
 
 export default function SolicitarReserva() {
   const [selectedPavilhaoId, setselectedPavilhaoId] = useState('');
   const [selectedSpaceId, setSelectedSpaceId] = useState('');
   const [spaces, setSpaces] = useState([]);
 
-  const [horario, setHorario] = useState(new Date());
-  const [horarioDate, setHorarioDate] = useState(new Date());
+  const [horarioInicio, setHorarioInicio] = useState(new Date());
+  const [horarioFinal, setHorarioFinal] = useState(new Date());
   const [dataInicio, setDataInicio] = useState(null);
   const [dataFinal, setDataFinal] = useState(null);
 
@@ -47,9 +95,29 @@ export default function SolicitarReserva() {
     }
   };
 
-  const handleHorarioChange = newDate => {
-    setHorario(newDate);
-    console.log('Horário:', newDate.getHours() + ':' + newDate.getMinutes());
+  const handleHorarioInicioChange = newDate => {
+    setHorarioInicio(newDate);
+    console.log(
+      'Horário Início:',
+      newDate.getHours() + ':' + newDate.getMinutes(),
+    );
+  };
+
+  const handleHorarioFinalChange = newDate => {
+    const today = new Date();
+    // Verificar se o horário final é anterior ao horário atual
+    if (newDate < today) {
+      Alert.alert(
+        'Atenção',
+        'Você não pode selecionar um horário final anterior ao horário atual.',
+      );
+      return;
+    }
+    setHorarioFinal(newDate);
+    console.log(
+      'Horário Final:',
+      newDate.getHours() + ':' + newDate.getMinutes(),
+    );
   };
 
   useEffect(() => {
@@ -74,11 +142,8 @@ export default function SolicitarReserva() {
       .post(
         'https://gestao-de-espaco-api.onrender.com/space/create-space-request',
         {
-          date: {
-            time: horario.getHours() + ':' + horario.getMinutes(),
-            initial_Period: dataInicio,
-            end_Period: dataFinal,
-          },
+          initial_Period: dataInicio,
+          end_Period: dataFinal,
         },
       )
       .then(function (response) {
@@ -96,7 +161,7 @@ export default function SolicitarReserva() {
 
   console.log('Inicio:', dataInicio);
   console.log('final:', dataFinal);
-  console.log('\nhorario', horario);
+  console.log('\nhorario', horarioInicio);
   console.log(selectedSpaceId);
 
   return (
@@ -129,15 +194,11 @@ export default function SolicitarReserva() {
           ))}
         </Picker>
 
-        <DatePicker
-          date={horario}
-          onDateChange={handleHorarioChange}
-          mode="time"
-          dividerColor="red"
-        />
         <Calendar
           markingType={'multi-dot'}
           onDayPress={handleDayPress}
+          androidVariant={'nativeAndroid'}
+          LocaleConfig={'pt-br'}
           markedDates={{
             [dataInicio]: {
               dots: [{key: 'inicio', color: 'blue'}],
@@ -154,6 +215,30 @@ export default function SolicitarReserva() {
             },
           }}
         />
+
+        <ViewTextHorario>
+          <TextHorario>Horario Inicio</TextHorario>
+          <TextHorario>Horario Final</TextHorario>
+        </ViewTextHorario>
+        <ViewHorario>
+          <DatePicker
+            date={horarioInicio}
+            onDateChange={handleHorarioInicioChange}
+            mode="time"
+            androidVariant="nativeAndroid"
+            locale="pt_BR"
+            dividerColor="blue"
+          />
+
+          <DatePicker
+            date={horarioFinal}
+            onDateChange={handleHorarioFinalChange}
+            mode="time"
+            androidVariant="nativeAndroid"
+            locale="pt_BR"
+            dividerColor="red"
+          />
+        </ViewHorario>
 
         <ButtonContainer>
           <TouchableOpacity onPress={salvarReserva}>

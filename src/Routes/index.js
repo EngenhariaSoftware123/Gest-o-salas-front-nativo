@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, StackRouter} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Login from '../screens/Login/Login';
 import Feed from '../screens/Profile/Profile';
@@ -9,6 +9,8 @@ import RegistroProfessor from '../screens/RegistrationTeacher/RegistrationTeache
 import TabRoutes from './tab.routes';
 import LinkManagersSpace from '../screens/LinkManagersSpace/LinkManagersSpace';
 import RegistarSetor from '../screens/RegistrationSector/RegistrationSector';
+import SolicitarReserva from '../screens/SolicitarReserva/SolicitarReserva';
+import CancelarReserva from '../screens/SolicitarReserva/CancelarReserva/CancelarReserva';
 
 import Profile from '../screens/Profile/Profile';
 import Space from '../screens/Space/Space';
@@ -53,6 +55,10 @@ const Routes = () => {
         {/* Cadastrar Setor */}
 
         <Stack.Screen name="RegistrationSector" component={RegistarSetor} />
+
+        <Stack.Screen name="SolicitarReserva" component={SolicitarReserva} />
+
+        <Stack.Screen name="CancelarReserva" component={CancelarReserva} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import {Picker} from '@react-native-picker/picker';
-import DatePicker from 'react-native-date-picker';
 
 export const View = styled.View`
   flex: 1;
@@ -44,3 +42,22 @@ export const TextLabel = styled.Text`
   margin-top: 30px;
 `;
 
+export const ViewHorario = styled.View`
+  margin: 10px;
+  flex-direction: row; /* Para posicionar os componentes lado a lado */
+  justify-content: center; /* Para adicionar espaço entre os componentes */
+  margin-bottom: 10px; /* Adiciona um espaço na parte inferior */
+`;
+export const ViewTextHorario = styled.View`
+  margin-top: 10px;
+  padding: 5px;
+  flex-direction: row; /* Para posicionar os componentes lado a lado */
+  justify-content: center; /* Para adicionar espaço entre os componentes */
+
+  /* Adiciona um espaço na parte inferior */
+`;
+
+export const TextHorario = styled.Text`
+  font-size: 20px;
+  color: black;
+`;
