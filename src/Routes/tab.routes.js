@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import Feed from '../screens/Profile/Profile';
 import Icon from 'react-native-vector-icons/Feather';
 import Home from '../screens/Home/Home';
 import Space from '../screens/Space/Space';

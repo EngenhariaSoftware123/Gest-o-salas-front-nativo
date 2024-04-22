@@ -11,9 +11,10 @@ import LinkManagersSpace from '../screens/LinkManagersSpace/LinkManagersSpace';
 import RegistarSetor from '../screens/RegistrationSector/RegistrationSector';
 import SolicitarReserva from '../screens/SolicitarReserva/SolicitarReserva';
 import CancelarReserva from '../screens/SolicitarReserva/CancelarReserva/CancelarReserva';
-
+import ConsultSpace from '../screens/Space/ConsultarEspaco/ConsultarEspaco';
 import Profile from '../screens/Profile/Profile';
 import Space from '../screens/Space/Space';
+import DetailsSpace from '../screens/Space/DetalhesEspaço/DetalhesEspaço';
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,8 @@ const Routes = () => {
         <Stack.Screen name="SolicitarReserva" component={SolicitarReserva} />
 
         <Stack.Screen name="CancelarReserva" component={CancelarReserva} />
+        <Stack.Screen name="ConsultarEspaços" component={ConsultSpace} />
+        <Stack.Screen name="DetalhesEspaços" component={DetailsSpace} />
       </Stack.Navigator>
     </NavigationContainer>
   );

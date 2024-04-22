@@ -47,7 +47,7 @@ export default function Space() {
   const optionsMultiple = [
     {text: 'Rampa de Acesso', id: 1},
     {text: 'Piso Tátil.', id: 2},
-    {text: 'Carteira Especial: Obeso', id: 3},
+    {text: 'Carteira Especial: PCD', id: 3},
   ];
 
   return (

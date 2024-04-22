@@ -56,6 +56,11 @@ export default function Home({route}) {
     navigation.navigate('CancelarReserva');
     console.log('Solictando Reserva');
   };
+  const ConsultarEspaco = () => {
+    navigation.navigate('ConsultarEspaços', {email: email});
+    console.log('ConsultarEspaços');
+  };
+
   const [userName, setUserName] = useState(name);
   //console.log(userlogin);
   console.log(roles);
@@ -88,8 +93,8 @@ export default function Home({route}) {
         <TouchableOpacity style={styles.button} onPress={RegistarSetor}>
           <Text style={styles.buttonText}>Cadastrar setor</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={CadastrarEspaco}>
-          <Text style={styles.buttonText}>Cadastrar Espaço</Text>
+        <TouchableOpacity style={styles.button} onPress={ConsultarEspaco}>
+          <Text style={styles.buttonText}>Consultar Espaços</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={ReservaSolicitar}>
           <Text style={styles.buttonText}>Solicitar Reserva</Text>

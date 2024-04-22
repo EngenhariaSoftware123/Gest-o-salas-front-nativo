@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TextButton,
 } from './Styles.js';
-import {ScrollView} from 'react-native';
+import {Alert, ScrollView} from 'react-native';
 import axios from 'axios';
 import CheckBox from '../../components/CheckBox/index.js';
 
@@ -40,10 +40,28 @@ export default function RegistroProfessor() {
   }, []); */
 
   const salvarProfessor = () => {
-    axios.post('');
+    axios
+      .post(
+        'https://https://gestao-de-espaco-api.onrender.com/teacher/create-teacher',
+        {
+          name: nomeProfessor,
+          enrollment: numeroDaMatricula,
+          contact: numeroCelular,
+          department: departamento,
+          contact: numeroCelular,
+          email: emailProfessor,
+        },
+      )
+      .then(response => {
+        console.log(response.data);
+        Alert.alert('professor cadastrado');
+      })
+      .catch(e => {
+        console.log(e);
+      });
     console.log('Nome do Professor: ', nomeProfessor);
     console.log('Numero da matrícula: ', numeroDaMatricula);
-    console.log('Departamento: ', departamento);
+    console.log('Departamento: ', departamento.op);
     console.log('Número do celular', numeroCelular);
     console.log('E-mail do Professor', emailProfessor);
   };
@@ -67,7 +85,7 @@ export default function RegistroProfessor() {
           onChangeText={text => setNumeroDaMatricula(text)}
         />
         <TextLabel>Departamento:</TextLabel>
-        <CheckBox options={Departamento} /* onChange={op => alert(op)} */ />
+        <CheckBox options={Departamento} onChange={op => alert(op)} />
 
         <TextLabel>Contato do Professor</TextLabel>
         <StyledTextInput

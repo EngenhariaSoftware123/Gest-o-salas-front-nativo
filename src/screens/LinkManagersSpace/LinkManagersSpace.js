@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Container,
   TextTitle,
@@ -10,12 +10,14 @@ import {
 import axios from 'axios';
 import {Picker} from '@react-native-picker/picker';
 
-export default function LinkManagersSpace() {
+export default function LinkManagersSpace({route}) {
+  const [selectedSpaceId, setSelectedSpaceId] = useState('');
+  const [selectedSpaceName, setSelectedSpaceName] = useState('');
   const [emailGestor, setEmailGestor] = useState('');
   const [pesquisarLocal, setpesquisarLocal] = useState('');
   const [reserva, setreserva] = useState('');
   const [mostrarCampo, setMostrarCampo] = useState(false); // Estado para controlar a visibilidade do campo combinado
-
+  const [spaces, setSpaces] = useState([]);
   const handleInputChange = () => {
     const combinedText = `${emailGestor};${pesquisarLocal};${reserva}`;
     console.log('Email do Gestor: ', emailGestor);
@@ -25,8 +27,8 @@ export default function LinkManagersSpace() {
     setMostrarCampo(true); // Mostra o campo combinado após pressionar o botão "Pesquisar"
   };
 
-  /* useEffect(() => {
-    console.log(email);
+  useEffect(() => {
+    //console.log(email);
     axios
       .get('https://gestao-de-espaco-api.onrender.com/space/get-spaces')
       .then(function (response) {
@@ -40,7 +42,7 @@ export default function LinkManagersSpace() {
   const handleSpaceChange = (spaceId, spaceName) => {
     setSelectedSpaceId(spaceId);
     setSelectedSpaceName(spaceName);
-  }; */
+  };
 
   return (
     <Container>
@@ -56,10 +58,24 @@ export default function LinkManagersSpace() {
 
       <TextLabel>Pesquisar Local</TextLabel>
       <Picker
-       /*  selectedValue={selectedSpaceId}
+        selectedValue={selectedSpaceId}
         onValueChange={(itemValue, itemIndex) =>
           handleSpaceChange(itemValue, spaces[itemIndex - 1].space.name)
-        } */></Picker>
+        }>
+        <Picker.Item label="Selecione o local" value="" />
+        {spaces.map(space => (
+          <Picker.Item
+            key={space.space.id}
+            label={space.space.name}
+            value={space.space.id}
+          />
+        ))}
+      </Picker>
+      {selectedSpaceName ? (
+        <Text style={styles.selectedText}>
+          Espaço selecionado: {selectedSpaceName}
+        </Text>
+      ) : null}
 
       {/* <StyledTextInput
         multiline
@@ -77,7 +93,7 @@ export default function LinkManagersSpace() {
       />
 
       <TouchableOpacity onPress={handleInputChange}>
-        <TextButton>Pesquisar</TextButton>
+        <TextButton>Vincular</TextButton>
       </TouchableOpacity>
 
       {mostrarCampo && (
