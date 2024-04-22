@@ -3,6 +3,7 @@ import {View, Image, StyleSheet} from 'react-native';
 
 const ProfileImage = ({source}) => {
   const [image, setImage] = useState('');
+  
   useEffect(() => {
     console.log(source);
     setImage(source);
