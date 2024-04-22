@@ -6,22 +6,18 @@ import {
   StyledTextInput,
   TouchableOpacity,
   TextButton,
-  DropdownButtonStyle,
-  DropdownButtonIconStyle,
-  DropdownItemStyle,
-  DropdownItemTxtStyle,
-  DropdownButtonTxtStyle,
 } from './Styles.js';
-import SelectDropdown from 'react-native-select-dropdown';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Alert, ScrollView} from 'react-native';
+import axios from 'axios';
+import CheckBox from '../../components/CheckBox/index.js';
 
 export default function RegistroProfessor() {
   const Departamento = [
-    {title: 'DCT'},
-    {title: 'DS I'},
-    {title: 'DS II'},
-    {title: 'DCHL'},
-    {title: 'DCB'},
+    {text: 'DCT', id: 1},
+    {text: 'DS I', id: 2},
+    {text: 'DS II', id: 3},
+    {text: 'DCHL', id: 4},
+    {text: 'DCB', id: 5},
   ];
 
   const [nomeProfessor, setNomeProfessor] = useState('');
@@ -30,77 +26,85 @@ export default function RegistroProfessor() {
   const [numeroCelular, setNumeroCelular] = useState('');
   const [emailProfessor, setEmailProfessor] = useState('');
 
+  /*  useEffect(() => {
+    console.log(email);
+    axios
+      .get('https://gestao-de-espaco-api.onrender.com/space/get-spaces')
+      .then(function (response) {
+        console.log(response.data);
+        setSpaces(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []); */
+
   const salvarProfessor = () => {
+    axios
+      .post(
+        'https://https://gestao-de-espaco-api.onrender.com/teacher/create-teacher',
+        {
+          name: nomeProfessor,
+          enrollment: numeroDaMatricula,
+          contact: numeroCelular,
+          department: departamento,
+          contact: numeroCelular,
+          email: emailProfessor,
+        },
+      )
+      .then(response => {
+        console.log(response.data);
+        Alert.alert('professor cadastrado');
+      })
+      .catch(e => {
+        console.log(e);
+      });
     console.log('Nome do Professor: ', nomeProfessor);
     console.log('Numero da matrícula: ', numeroDaMatricula);
-    console.log('Departamento: ', departamento);
+    console.log('Departamento: ', departamento.op);
     console.log('Número do celular', numeroCelular);
     console.log('E-mail do Professor', emailProfessor);
   };
 
   return (
-    <Container>
-      <TextTitle>Cadastrar Professor</TextTitle>
-      <TextLabel>Nome do Professor</TextLabel>
-      <StyledTextInput
-        multiline
-        placeholder="Digite o nome do professor"
-        value={nomeProfessor}
-        onChangeText={text => setNomeProfessor(text)}
-      />
-      <TextLabel>Matrícula do Professor</TextLabel>
-      <StyledTextInput
-        multiline
-        placeholder="Matrícula do professor"
-        value={numeroDaMatricula}
-        onChangeText={text => setNumeroDaMatricula(text)}
-      />
-      <TextLabel>Departamento:</TextLabel>
-      <SelectDropdown
-        data={Departamento}
-        onSelect={(selectedItem, index) => {
-          setDepartamento(selectedItem.title);
-        }}
-        renderButton={(selectedItem, isOpened) => {
-          return (
-            <DropdownButtonStyle>
-              <DropdownButtonIconStyle>
-                {isOpened ? '▲' : '▼'}
-              </DropdownButtonIconStyle>
-              <DropdownButtonTxtStyle>
-                {(departamento && departamento) || 'Escolha o departamento:'}
-              </DropdownButtonTxtStyle>
-            </DropdownButtonStyle>
-          );
-        }}
-        renderItem={(item, index, isSelected) => {
-          return (
-            <DropdownItemStyle
-              style={{...(isSelected && {backgroundColor: '#D2D9DF'})}}>
-              <DropdownItemTxtStyle>{item.title}</DropdownItemTxtStyle>
-            </DropdownItemStyle>
-          );
-        }}
-        showsVerticalScrollIndicator={false}
-      />
+    <ScrollView>
+      <Container>
+        <TextTitle>Cadastrar Professor</TextTitle>
+        <TextLabel>Nome do Professor</TextLabel>
+        <StyledTextInput
+          multiline
+          placeholder="Digite o nome do professor"
+          value={nomeProfessor}
+          onChangeText={text => setNomeProfessor(text)}
+        />
+        <TextLabel>Matrícula do Professor</TextLabel>
+        <StyledTextInput
+          multiline
+          placeholder="Matrícula do professor"
+          value={numeroDaMatricula}
+          onChangeText={text => setNumeroDaMatricula(text)}
+        />
+        <TextLabel>Departamento:</TextLabel>
+        <CheckBox options={Departamento} onChange={op => alert(op)} />
 
-      <TextLabel>Contato do Professor</TextLabel>
-      <StyledTextInput
-        multiline
-        placeholder="Celular/Telefone"
-        value={numeroCelular}
-        onChangeText={text => setNumeroCelular(text)}
-      />
-      <TextLabel>Email do Professor</TextLabel>
-      <StyledTextInput
-        multiline
-        placeholder="Matrícula do professor"
-        value={emailProfessor}
-        onChangeText={text => setEmailProfessor(text)}
-      />
-      <TouchableOpacity onPress={salvarProfessor}>
-        <TextButton>Cadastrar Professor</TextButton>
-      </TouchableOpacity>
-    </Container>
+        <TextLabel>Contato do Professor</TextLabel>
+        <StyledTextInput
+          multiline
+          placeholder="Celular/Telefone"
+          value={numeroCelular}
+          onChangeText={text => setNumeroCelular(text)}
+        />
+        <TextLabel>Email do Professor</TextLabel>
+        <StyledTextInput
+          multiline
+          placeholder="Matrícula do professor"
+          value={emailProfessor}
+          onChangeText={text => setEmailProfessor(text)}
+        />
+        <TouchableOpacity onPress={salvarProfessor}>
+          <TextButton>Cadastrar Professor</TextButton>
+        </TouchableOpacity>
+      </Container>
+    </ScrollView>
   );
 }

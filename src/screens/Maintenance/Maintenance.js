@@ -16,7 +16,7 @@ export default function ManutencaoScreen({route}) {
   const [descricao, setDescricao] = useState('');
   const [spaces, setSpaces] = useState([]);
   const {email} = route.params;
-  
+
   useEffect(() => {
     console.log(email);
     axios
@@ -45,6 +45,7 @@ export default function ManutencaoScreen({route}) {
       )
       .then(function (response) {
         Alert.alert(`manuntenção cadastrada`);
+        console.log(response.data);
       })
       .catch(function (error) {
         Alert.alert(
