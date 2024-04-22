@@ -17,7 +17,6 @@ export default function Space() {
   const [localizacao, setLocalizacao] = useState('');
   const [capacidade, setCapacidade] = useState(0);
   const [tipodesala, setTipodeSala] = useState('');
-  const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const handleSubmit = async () => {
     axios
@@ -29,15 +28,19 @@ export default function Space() {
           typeRoom: tipodesala,
           acessibilty: ['cadeira reclinaveis'],
           available_equipments: [{name: 'projetor', quantity: 4}],
+          selectedOptions: optionsMultiple, // Adiciona os valores selecionados aqui
         },
       })
-      .then(response => {
-        // Handle successful response
-        console.log('Response:', response.data);
+      .then(function (response) {
+        Alert.alert('Solicitação de reserva cadastrada');
       })
-      .catch(error => {
-        // Handle error
-        console.error('Error:', error);
+      .catch(function (error) {
+        Alert.alert(
+          'Erro',
+          'ocorreu um erro reserva não solicitada',
+          [{text: 'OK', onPress: () => {}}],
+          {cancelable: false},
+        );
       });
   };
 
@@ -92,7 +95,7 @@ export default function Space() {
         <TextTitle>Recursos disponíveis:</TextTitle>
         <CheckBox
           options={optionsMultiple}
-          /* onChange={op => alert(op)}  */
+          /* onChange={op => alert(op)} */
           multiple
         />
 
