@@ -60,7 +60,8 @@ LocaleConfig.locales['pt-br'] = {
 
 LocaleConfig.defaultLocale = 'pt-br';
 
-export default function SolicitarReserva() {
+export default function SolicitarReserva({route}) {
+  const {email, spaceName, spaceId} = route.params;
   const [selectedPavilhaoId, setselectedPavilhaoId] = useState('');
   const [selectedSpaceId, setSelectedSpaceId] = useState('');
   const [spaces, setSpaces] = useState([]);
@@ -133,7 +134,7 @@ export default function SolicitarReserva() {
   }, []);
 
   const salvarReserva = () => {
-    if (!selectedSpaceId || !dataInicio || !dataFinal || !selectedPavilhaoId) {
+    if (!dataInicio || !dataFinal) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
@@ -142,8 +143,10 @@ export default function SolicitarReserva() {
       .post(
         'https://gestao-de-espaco-api.onrender.com/space/create-space-request',
         {
+          spaceId: spaceId,
           initial_Period: dataInicio,
           end_Period: dataFinal,
+          email: email,
         },
       )
       .then(function (response) {
@@ -168,7 +171,9 @@ export default function SolicitarReserva() {
     <ScrollView>
       <View>
         <TextTitle>Solicitar espaço</TextTitle>
-        <Picker
+        <TextTitle>{spaceName}</TextTitle>
+
+        {/*<Picker
           selectedValue={selectedPavilhaoId}
           onValueChange={itemValue => setselectedPavilhaoId(itemValue)}>
           <Picker.Item label="Selecione o pavilhão" value="" />
@@ -192,7 +197,7 @@ export default function SolicitarReserva() {
               value={space.space.id}
             />
           ))}
-        </Picker>
+        </Picker>*/}
 
         <Calendar
           markingType={'multi-dot'}

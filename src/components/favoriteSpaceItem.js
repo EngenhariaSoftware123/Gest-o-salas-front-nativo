@@ -10,6 +10,8 @@ const FavoriteSpaceItem = ({space}) => {
       typeRoom: space.typeRoom,
       capacity: space.capacity,
       email: space.email,
+      id: space.id,
+      acessibility: space.acessibility,
     });
   };
   return (

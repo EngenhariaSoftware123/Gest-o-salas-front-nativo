@@ -5,15 +5,24 @@ import FavoriteSpaceItem from '../../../components/favoriteSpaceItem.js';
 import {useNavigation} from '@react-navigation/native';
 
 export default function DetailsSpace({route}) {
-  const {name, location, typeRoom, capacity, email} = route.params;
+  const {name, location, typeRoom, capacity, email, id, acessibility} =
+    route.params;
   const navigation = useNavigation();
   const [spaces, setSpaces] = useState([]);
   const solicitarManutencao = () => {
-    navigation.navigate('Maintenance', {email: email});
+    navigation.navigate('Maintenance', {
+      email: email,
+      spaceName: name,
+      spaceId: id,
+    });
     console.log('Solicitando manutenção...');
   };
   const ReservaSolicitar = () => {
-    navigation.navigate('SolicitarReserva');
+    navigation.navigate('SolicitarReserva', {
+      email: email,
+      spaceName: name,
+      spaceId: id,
+    });
     console.log('Solictando Reserva');
   };
   useEffect(() => {
@@ -39,6 +48,16 @@ export default function DetailsSpace({route}) {
       <Text style={styles.description}>Pavilhão: {location}</Text>
       <Text style={styles.description}>Tipo de Sala:{typeRoom}</Text>
       <Text style={styles.description}>Capacidade: {capacity}</Text>
+      <Text style={styles.description}>
+        Acessibilidade:{' '}
+        {acessibility.map((acess, index) => (
+          <Text key={index}>
+            {acess}
+            {index !== acessibility.length - 1 ? ', ' : ''}
+          </Text>
+        ))}
+      </Text>
+
       <TouchableOpacity style={styles.button} onPress={ReservaSolicitar}>
         <Text style={styles.buttonText}>Solicitar Reserva</Text>
       </TouchableOpacity>
@@ -65,6 +84,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'left',
     marginBottom: 10,
+  },
+  containerRow: {
+    display: 'flex',
+    flexDirection: 'row',
   },
   button: {
     backgroundColor: '#007AFF',

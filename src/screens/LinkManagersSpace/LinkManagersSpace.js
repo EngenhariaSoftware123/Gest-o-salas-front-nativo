@@ -9,23 +9,16 @@ import {
 } from './Styles.js'; // Aliased TextInput import
 import axios from 'axios';
 import {Picker} from '@react-native-picker/picker';
+import {Alert} from 'react-native';
 
 export default function LinkManagersSpace({route}) {
-  const [selectedSpaceId, setSelectedSpaceId] = useState('');
+  const [selectedSpaceId, setSelectedSpaceId] = useState(0);
   const [selectedSpaceName, setSelectedSpaceName] = useState('');
   const [emailGestor, setEmailGestor] = useState('');
   const [pesquisarLocal, setpesquisarLocal] = useState('');
   const [reserva, setreserva] = useState('');
   const [mostrarCampo, setMostrarCampo] = useState(false); // Estado para controlar a visibilidade do campo combinado
   const [spaces, setSpaces] = useState([]);
-  const handleInputChange = () => {
-    const combinedText = `${emailGestor};${pesquisarLocal};${reserva}`;
-    console.log('Email do Gestor: ', emailGestor);
-    console.log('Pesquisar Local: ', pesquisarLocal);
-    console.log('Reserva ou de Serviço: ', reserva);
-    console.log('Texto Combinado: ', combinedText);
-    setMostrarCampo(true); // Mostra o campo combinado após pressionar o botão "Pesquisar"
-  };
 
   useEffect(() => {
     //console.log(email);
@@ -44,6 +37,37 @@ export default function LinkManagersSpace({route}) {
     setSelectedSpaceName(spaceName);
   };
 
+  const handleInputChange = () => {
+    const combinedText = `${emailGestor};${pesquisarLocal};${reserva}`;
+    console.log('Email do Gestor: ', emailGestor);
+    console.log('Pesquisar Local: ', pesquisarLocal);
+    console.log('Reserva ou de Serviço: ', reserva);
+    console.log('Texto Combinado: ', combinedText);
+
+    console.log(emailGestor); // Mostra o campo combinado após pressionar o botão "Pesquisar"
+    axios
+      .post(
+        'https://gestao-de-espaco-api.onrender.com/manager/create-manager',
+        {
+          email: emailGestor,
+          type: reserva,
+          spaceId: selectedSpaceId,
+        },
+      )
+      .then(function (response) {
+        Alert.alert(`gestor cadastrada`);
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        Alert.alert(
+          'Erro',
+          'ocorreu um erro gestor não cadastrado',
+          [{text: 'OK', onPress: () => {}}],
+          {cancelable: false},
+        );
+        console.log(error);
+      });
+  };
   return (
     <Container>
       <TextTitle>Vincular Gestor de Espaço</TextTitle>
@@ -72,9 +96,7 @@ export default function LinkManagersSpace({route}) {
         ))}
       </Picker>
       {selectedSpaceName ? (
-        <Text style={styles.selectedText}>
-          Espaço selecionado: {selectedSpaceName}
-        </Text>
+        <TextLabel>Espaço selecionado: {selectedSpaceName}</TextLabel>
       ) : null}
 
       {/* <StyledTextInput
@@ -87,7 +109,7 @@ export default function LinkManagersSpace({route}) {
       <TextLabel>Reserva ou de Serviçor</TextLabel>
       <StyledTextInput
         multiline
-        placeholder="Reserva ou de Serviçor"
+        placeholder="Reserva ou de Serviço"
         value={reserva}
         onChangeText={text => setreserva(text)}
       />
@@ -95,15 +117,6 @@ export default function LinkManagersSpace({route}) {
       <TouchableOpacity onPress={handleInputChange}>
         <TextButton>Vincular</TextButton>
       </TouchableOpacity>
-
-      {mostrarCampo && (
-        <StyledTextInput
-          multiline
-          placeholder="Email do gestor Pesquisar local; Reserva"
-          value={`${emailGestor}\n${pesquisarLocal}\n${reserva}`}
-          editable={false}
-        />
-      )}
     </Container>
   );
 }
