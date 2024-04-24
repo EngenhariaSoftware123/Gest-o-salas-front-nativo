@@ -42,6 +42,7 @@ export default function ConsultSpace({route}) {
               typeRoom: space.space.typeRoom,
               capacity: space.space.capacity,
               email: email,
+              acessibility: space.space.acessibility,
             }}
           />
         ))}

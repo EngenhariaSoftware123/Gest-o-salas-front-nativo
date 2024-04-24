@@ -2,30 +2,32 @@ import React, {useEffect, useState} from 'react';
 import {ScrollView, Button, Alert} from 'react-native';
 import {View, TextTitle} from './Styles.js'; // Aliased TextInput import
 import axios from 'axios';
+import {CancelarReservaSpace} from '../../../components/SolicitarReservasItem/SolicitarReservasItem.js';
 
 export default function CancelarReserva({route}) {
   const {email, pavilion, name, roles} = route.params || {};
-  const [cancelarReservas, setCancelarReservas] = useState([]);
+  useEffect(() => {
+    console.log(email);
+    if (email) {
+      fetchReservas();
+    }
+  }, []);
 
+  const [cancelarReservas, setCancelarReservas] = useState([]);
+  useEffect(() => {}, []);
   const fetchReservas = () => {
     axios
       .get(
-        `https://gestao-de-espaco-api.onrender.com/space/get-space-requests/${email}`,
+        `https://gestao-de-espaco-api.onrender.com/space/get-space-requests/202110447@uesb.edu.br`,
       )
       .then(function (response) {
-        console.log(response.data.requests_spacse);
-        setCancelarReservas(response.data.requests_spacse);
+        console.log(response.data);
+        setCancelarReservas(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
   };
-
-  useEffect(() => {
-    if (email) {
-      fetchReservas();
-    }
-  }, [email]);
 
   const handleDelete = (email, id) => {
     axios

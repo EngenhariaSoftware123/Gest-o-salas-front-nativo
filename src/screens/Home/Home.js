@@ -53,7 +53,7 @@ export default function Home({route}) {
     console.log('Solictando Reserva');
   };
   const CancelarReserva = () => {
-    navigation.navigate('CancelarReserva');
+    navigation.navigate('CancelarReserva', {email: email});
     console.log('Solictando Reserva');
   };
   const ConsultarEspaco = () => {
@@ -84,9 +84,6 @@ export default function Home({route}) {
           onPress={solicitarCadastroProfessor}>
           <Text style={styles.buttonText}>Cadastrar Professor</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={solicitarManutencao}>
-          <Text style={styles.buttonText}>Solicitar Manutenção</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={vincularGestorEspaço}>
           <Text style={styles.buttonText}>Vincular Gestor ao Espaço</Text>
         </TouchableOpacity>
@@ -95,9 +92,6 @@ export default function Home({route}) {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={ConsultarEspaco}>
           <Text style={styles.buttonText}>Consultar Espaços</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={ReservaSolicitar}>
-          <Text style={styles.buttonText}>Solicitar Reserva</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={CancelarReserva}>
           <Text style={styles.buttonText}>Cancerlar Reserva</Text>

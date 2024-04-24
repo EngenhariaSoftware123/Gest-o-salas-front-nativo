@@ -11,35 +11,17 @@ import axios from 'axios';
 import {Picker} from '@react-native-picker/picker';
 
 export default function ManutencaoScreen({route}) {
-  const [selectedSpaceId, setSelectedSpaceId] = useState('');
-  const [selectedSpaceName, setSelectedSpaceName] = useState('');
+  const {email, spaceName, spaceId} = route.params;
   const [descricao, setDescricao] = useState('');
-  const [spaces, setSpaces] = useState([]);
-  const {email} = route.params;
 
-  useEffect(() => {
-    console.log(email);
-    axios
-      .get('https://gestao-de-espaco-api.onrender.com/space/get-spaces')
-      .then(function (response) {
-        console.log(response.data);
-        setSpaces(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
-  const handleSpaceChange = (spaceId, spaceName) => {
-    setSelectedSpaceId(spaceId);
-    setSelectedSpaceName(spaceName);
-  };
   const salvarManutencao = () => {
+    console.log(spaceId);
     axios
       .post(
         'https://gestao-de-espaco-api.onrender.com/maintenance/create-maintenance',
         {
           email: email,
-          spaceId: selectedSpaceId,
+          spaceId: spaceId,
           description: descricao,
         },
       )
@@ -54,6 +36,7 @@ export default function ManutencaoScreen({route}) {
           [{text: 'OK', onPress: () => {}}],
           {cancelable: false},
         );
+        console.log(error);
       });
     // Implemente a lógica para salvar no banco de dados ou fazer uma solicitação para o servidor
   };
@@ -62,26 +45,7 @@ export default function ManutencaoScreen({route}) {
     <View style={styles.container}>
       <Text style={styles.title}>Solicitar Manutenção</Text>
       <Text style={styles.label}>Local:</Text>
-      <Picker
-        selectedValue={selectedSpaceId}
-        style={styles.input}
-        onValueChange={(itemValue, itemIndex) =>
-          handleSpaceChange(itemValue, spaces[itemIndex - 1].space.name)
-        }>
-        <Picker.Item label="Selecione o local" value="" />
-        {spaces.map(space => (
-          <Picker.Item
-            key={space.space.id}
-            label={space.space.name}
-            value={space.space.id}
-          />
-        ))}
-      </Picker>
-      {selectedSpaceName ? (
-        <Text style={styles.selectedText}>
-          Espaço selecionado: {selectedSpaceName}
-        </Text>
-      ) : null}
+      <Text style={styles.label}>{spaceName}</Text>
 
       <Text style={styles.label}>Descrição do Problema:</Text>
       <TextInput
