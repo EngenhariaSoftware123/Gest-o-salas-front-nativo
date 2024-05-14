@@ -62,8 +62,7 @@ LocaleConfig.defaultLocale = 'pt-br';
 
 export default function SolicitarReserva({route}) {
   const {email, spaceName, spaceId} = route.params;
-  const [selectedPavilhaoId, setselectedPavilhaoId] = useState('');
-  const [selectedSpaceId, setSelectedSpaceId] = useState('');
+
   const [spaces, setSpaces] = useState([]);
 
   const [horarioInicio, setHorarioInicio] = useState(new Date());
@@ -100,24 +99,24 @@ export default function SolicitarReserva({route}) {
     setHorarioInicio(newDate);
     console.log(
       'Horário Início:',
-      newDate.getHours() + ':' + newDate.getMinutes(),
+      newDate.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}),
     );
   };
 
   const handleHorarioFinalChange = newDate => {
     const today = new Date();
     // Verificar se o horário final é anterior ao horário atual
-    if (newDate < today) {
+    /*  if (newDate < today) {
       Alert.alert(
         'Atenção',
         'Você não pode selecionar um horário final anterior ao horário atual.',
       );
       return;
-    }
+    } */
     setHorarioFinal(newDate);
     console.log(
       'Horário Final:',
-      newDate.getHours() + ':' + newDate.getMinutes(),
+      newDate.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}),
     );
   };
 
@@ -134,18 +133,26 @@ export default function SolicitarReserva({route}) {
   }, []);
 
   const salvarReserva = () => {
-    if (!dataInicio || !dataFinal) {
+    if (!dataInicio || !dataFinal || !horarioInicio || !horarioFinal) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
+
+    const horaFormatadaInicio =
+      new Date(horarioInicio).toISOString().substr(11, 12) + 'Z';
+    console.log('Horário Inicial Formatado:', horaFormatadaInicio);
+
+    const horaFormatadaFinal =
+      new Date(horarioFinal).toISOString().substr(11, 12) + 'Z';
+    console.log('Horário Final Formatado:', horaFormatadaFinal);
 
     axios
       .post(
         'https://gestao-de-espaco-api.onrender.com/space/create-space-request',
         {
           spaceId: spaceId,
-          initial_Period: dataInicio,
-          end_Period: dataFinal,
+          initial_Period: `${dataInicio}T${horaFormatadaInicio}`,
+          end_Period: `${dataFinal}T${horaFormatadaFinal}`,
           email: email,
         },
       )
@@ -155,7 +162,7 @@ export default function SolicitarReserva({route}) {
       .catch(function (error) {
         Alert.alert(
           'Erro',
-          'ocorreu um erro reserva não solicitada',
+          'Ocorreu um erro, reserva não solicitada',
           [{text: 'OK', onPress: () => {}}],
           {cancelable: false},
         );
@@ -164,15 +171,15 @@ export default function SolicitarReserva({route}) {
 
   console.log('Inicio:', dataInicio);
   console.log('final:', dataFinal);
-  console.log('\nhorario', horarioInicio);
-  console.log(selectedSpaceId);
+  console.log('horario Inicio', horarioInicio);
+  console.log('horario Final', horarioFinal);
 
   return (
     <ScrollView>
       <View>
         <TextTitle>Solicitar espaço</TextTitle>
-        <TextTitle>{spaceName}</TextTitle>
-
+        {/* <TextTitle>{spaceName}</TextTitle>
+         */}
         {/*<Picker
           selectedValue={selectedPavilhaoId}
           onValueChange={itemValue => setselectedPavilhaoId(itemValue)}>

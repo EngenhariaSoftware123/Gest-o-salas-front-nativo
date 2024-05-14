@@ -97,7 +97,7 @@ export default function RegistroProfessor() {
         <TextLabel>Email do Professor</TextLabel>
         <StyledTextInput
           multiline
-          placeholder="Matrícula do professor"
+          placeholder="Email do professor"
           value={emailProfessor}
           onChangeText={text => setEmailProfessor(text)}
         />
