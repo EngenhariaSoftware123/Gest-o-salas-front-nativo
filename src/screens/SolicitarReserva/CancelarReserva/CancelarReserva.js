@@ -18,7 +18,7 @@ export default function CancelarReserva({route}) {
   const fetchReservas = () => {
     axios
       .get(
-        `https://gestao-de-espaco-api.onrender.com/space/get-space-requests/202110447@uesb.edu.br`,
+        `https://gestao-de-espaco-api.onrender.com/space/get-space-requests/${email}`,
       )
       .then(function (response) {
         console.log(response.data);
