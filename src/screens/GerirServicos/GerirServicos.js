@@ -27,7 +27,11 @@ export default function GerirServicos({route}) {
       )
       .then(function (response) {
         console.log(response.data);
-        setSpaces(response.data);
+        // Filtra os espaços com status "ABERTO"
+        const openSpaces = response.data.filter(
+          space => space.status === 'ABERTO',
+        );
+        setSpaces(openSpaces);
       })
       .catch(function (error) {
         console.log(error);
@@ -48,7 +52,7 @@ export default function GerirServicos({route}) {
     console.log('STATUS: ', status);
     console.log('ID: ', id);
     axios
-      .post(
+      .put(
         // o id está definido para cada manutenção, por isso que eu deixei setado para o id
         `https://gestao-de-espaco-api.onrender.com/maintenance/update-status-maintenance/${id}`,
         {
@@ -57,6 +61,8 @@ export default function GerirServicos({route}) {
       )
       .then(function (response) {
         Alert.alert('Status do serviço salvo com sucesso');
+        // Atualiza a lista de espaços após salvar o status
+        atualizarDados();
       })
       .catch(function (error) {
         Alert.alert(
@@ -75,7 +81,11 @@ export default function GerirServicos({route}) {
       )
       .then(function (response) {
         console.log(response.data);
-        setSpaces(response.data);
+        // Filtra os espaços com status "ABERTO"
+        const openSpaces = response.data.filter(
+          space => space.status === 'ABERTO',
+        );
+        setSpaces(openSpaces);
       })
       .catch(function (error) {
         console.log(error);

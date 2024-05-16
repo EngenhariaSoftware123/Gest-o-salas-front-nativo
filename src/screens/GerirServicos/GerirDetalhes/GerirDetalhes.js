@@ -16,10 +16,10 @@ export default function GerirDetalhes() {
         const data = response.data;
         const completed = data.filter(
           //service => service.status === 'Concluído',
-          service => service.status === 'ABERTO',
+          service => service.status === 'Concluído',
         );
         //const canceled = data.filter(service => service.status === 'Cancelado');
-        const canceled = data.filter(service => service.status === 'ABERTO');
+        const canceled = data.filter(service => service.status === 'Cancelado');
         setCompletedServices(completed);
         setCanceledServices(canceled);
       })
@@ -34,7 +34,7 @@ export default function GerirDetalhes() {
         <TextTitle>Detalhes dos Serviços Concluídos:</TextTitle>
         {completedServices.map(service => (
           //<BoxGerir key={service.id} completed={service.status === 'Concluído'}>
-          <BoxGerir key={service.id} completed={service.status === 'ABERTO'}>
+          <BoxGerir key={service.id} completed={service.status === 'Concluído'}>
             <Text>{service.description}</Text>
             <Text>Status: {service.status}</Text>
           </BoxGerir>
@@ -44,7 +44,7 @@ export default function GerirDetalhes() {
         <TextTitle>Detalhes dos Serviços Cancelados:</TextTitle>
         {canceledServices.map(service => (
           // <BoxGerir key={service.id} canceled={service.status === 'Cancelado'}>
-          <BoxGerir key={service.id} canceled={service.status === 'ABERTO'}>
+          <BoxGerir key={service.id} canceled={service.status === 'Cancelado'}>
             <Text>{service.description}</Text>
             <Text>Status: {service.status}</Text>
           </BoxGerir>
