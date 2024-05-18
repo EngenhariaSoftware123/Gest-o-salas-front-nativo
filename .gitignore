@@ -68,3 +68,4 @@ yarn-error.log
 .env
 
 android/app/google-services.json
+src/screens/Login/Login.js

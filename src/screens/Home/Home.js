@@ -48,19 +48,29 @@ export default function Home({route}) {
     console.log('Solicantando cadastro de espaço');
   };
 
-  const ReservaSolicitar = () => {
-    navigation.navigate('SolicitarReserva');
+  /* const SolicitarReserva = () => {
+    navigation.navigate('SolicitarReserva'), {email: email};
     console.log('Solictando Reserva');
+  }; */
+  const GerirReserva = () => {
+    navigation.navigate('GerirReserva', {email: email});
+    console.log('Gerir  Reserva');
   };
-  const CancelarReserva = () => {
-    navigation.navigate('CancelarReserva', {email: email});
-    console.log('Solictando Reserva');
-  };
+
   const ConsultarEspaco = () => {
     navigation.navigate('ConsultarEspaços', {email: email});
     console.log('ConsultarEspaços');
   };
 
+  const ReservaSemSolicitacao = () => {
+    navigation.navigate('ReservaSemSolicitacao');
+    console.log('Reservas sem solicitação');
+  };
+
+  const GerirServicos = () => {
+    navigation.navigate('GerirServicos');
+    console.log('Gerir Serviços');
+  };
   const [userName, setUserName] = useState(name);
   //console.log(userlogin);
   console.log(roles);
@@ -93,8 +103,17 @@ export default function Home({route}) {
         <TouchableOpacity style={styles.button} onPress={ConsultarEspaco}>
           <Text style={styles.buttonText}>Consultar Espaços</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={CancelarReserva}>
-          <Text style={styles.buttonText}>Cancerlar Reserva</Text>
+        <TouchableOpacity style={styles.button} onPress={GerirReserva}>
+          <Text style={styles.buttonText}>Gerir Reserva</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={CadastrarEspaco}>
+          <Text style={styles.buttonText}>CadastrarEspaco</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={ReservaSemSolicitacao}>
+          <Text style={styles.buttonText}>Reserva sem solicitação</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={GerirServicos}>
+          <Text style={styles.buttonText}>Gerir Serviços</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

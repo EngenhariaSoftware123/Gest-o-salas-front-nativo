@@ -15,7 +15,7 @@ export const TextTitle = styled.Text`
 export const TextLabel = styled.Text``;
 
 export const StyledTextInput = styled.TextInput`
-  height: 100xp;
+/*   height: 100xp; */
   border-width: 1px;
   border-color: #ccc;
   border-radius: 5px;
