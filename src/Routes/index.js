@@ -15,7 +15,7 @@ import ConsultSpace from '../screens/Space/ConsultarEspaco/ConsultarEspaco';
 import Profile from '../screens/Profile/Profile';
 import Space from '../screens/Space/Space';
 import DetailsSpace from '../screens/Space/DetalhesEspaço/DetalhesEspaço';
-import ReservaSemSolicitacao from '../screens/ReservaSemSolicitacao/ReservaSemSolicitacao';
+//import ReservaSemSolicitacao from '../screens/ReservaSemSolicitacao/ReservaSemSolicitacao';
 
 const Stack = createStackNavigator();
 
@@ -63,10 +63,10 @@ const Routes = () => {
         <Stack.Screen name="CancelarReserva" component={CancelarReserva} />
         <Stack.Screen name="ConsultarEspaços" component={ConsultSpace} />
         <Stack.Screen name="DetalhesEspaços" component={DetailsSpace} />
-        <Stack.Screen
+        {/*<Stack.Screen
           name="ReservaSemSolicitacao"
           component={ReservaSemSolicitacao}
-        />
+  />*/}
       </Stack.Navigator>
     </NavigationContainer>
   );
