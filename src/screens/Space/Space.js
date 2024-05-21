@@ -1,43 +1,66 @@
-import React, {useState, useEffect} from 'react';
-import axios, {isCancel, AxiosError} from 'axios';
-import {
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
-  TextInput,
-} from 'react-native';
-
-import {TextTitle} from './Styles';
+import React, {useState} from 'react';
+import axios from 'axios';
+import {ScrollView, Alert} from 'react-native';
 import CheckBox from '../../components/CheckBox';
+import {
+  Container,
+  TextTitle,
+  Input,
+  EquipmentContainer,
+  AddButton,
+  AddButtonText,
+  ButtonContainer,
+  SubmitButton,
+  CancelButton,
+  ButtonText,
+} from './Styles.js';
 
 export default function Space() {
   const [nomeEspaco, setNomeEspaco] = useState('');
   const [localizacao, setLocalizacao] = useState('');
-  const [capacidade, setCapacidade] = useState(0);
+  const [capacidade, setCapacidade] = useState('');
   const [tipodesala, setTipodeSala] = useState('');
+  const [equipamentos, setEquipamentos] = useState([{name: '', quantity: '0'}]);
+
+  const handleAddEquipment = () => {
+    setEquipamentos([...equipamentos, {name: '', quantity: '0'}]);
+  };
+
+  const handleEquipamentosChange = (index, field, value) => {
+    const newEquipamentos = equipamentos.map((equipamento, i) => {
+      if (i === index) {
+        return {
+          ...equipamento,
+          [field]: field === 'quantity' ? value.replace(/[^0-9]/g, '') : value,
+        };
+      }
+      return equipamento;
+    });
+    setEquipamentos(newEquipamentos);
+  };
 
   const handleSubmit = async () => {
+    const acessibility = optionsMultiple.map(option => option.text);
     axios
       .post('https://gestao-de-espaco-api.onrender.com/space/create-space', {
-        data: {
-          name: nomeEspaco,
-          pavilion: localizacao,
-          capacity: capacidade,
-          typeRoom: tipodesala,
-          acessibilty: ['cadeira reclinaveis'],
-          available_equipments: [{name: 'projetor', quantity: 4}],
-          selectedOptions: optionsMultiple, // Adiciona os valores selecionados aqui
-        },
+        name: nomeEspaco,
+        pavilion: localizacao,
+        capacity: parseInt(capacidade, 10), // Convertendo capacidade para número
+        typeRoom: tipodesala,
+        acessibility: acessibility,
+        available_equipments: equipamentos.map(equipamento => ({
+          ...equipamento,
+          quantity: parseInt(equipamento.quantity, 10), // Convertendo quantity para número
+        })),
       })
-      .then(function (response) {
+      .then(response => {
         Alert.alert('Solicitação de reserva cadastrada');
       })
-      .catch(function (error) {
+      .catch(error => {
+        console.log(error);
         Alert.alert(
           'Erro',
-          'ocorreu um erro reserva não solicitada',
+          'Ocorreu um erro, reserva não solicitada',
           [{text: 'OK', onPress: () => {}}],
           {cancelable: false},
         );
@@ -51,108 +74,70 @@ export default function Space() {
   ];
 
   return (
-    <ScrollView
-      contentContainerStyle={localStyles.container}
-      keyboardShouldPersistTaps="handled">
-      <View>
+    <ScrollView /* contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled" */
+    >
+      <Container>
         <TextTitle>Cadastrar espaço</TextTitle>
-        <TextInput
+        <Input
           onChangeText={text => setNomeEspaco(text)}
           value={nomeEspaco}
           placeholder="Nome do espaço"
-          style={localStyles.input}
         />
-        <TextInput
+        <Input
           onChangeText={text => setLocalizacao(text)}
           value={localizacao}
           placeholder="Localização"
-          style={localStyles.input}
         />
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginRight: 10,
-          }}>
-          <TextInput
-            onChangeText={text => setCapacidade(text)}
+        <EquipmentContainer>
+          <Input
+            onChangeText={text => setCapacidade(text.replace(/[^0-9]/g, ''))}
             value={capacidade}
             placeholder="Capacidade"
-            style={localStyles.input}
+            keyboardType="numeric"
           />
-
-          <TextInput
-            onChangeText={text => {
-              setTipodeSala(text);
-            }}
+          <Input
+            onChangeText={text => setTipodeSala(text)}
             value={tipodesala}
             placeholder="Tipo de sala"
-            style={localStyles.input}
           />
-        </View>
+        </EquipmentContainer>
 
         <TextTitle>Recursos disponíveis:</TextTitle>
-        <CheckBox
-          options={optionsMultiple}
-          /* onChange={op => alert(op)} */
-          multiple
-        />
+        <CheckBox options={optionsMultiple} multiple />
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <TouchableOpacity onPress={handleSubmit} style={localStyles.button}>
-            <Text style={localStyles.buttonText}>Cadastrar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}} style={localStyles.button}>
-            <Text style={localStyles.buttonText}>Cancelar</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        <TextTitle>Equipamento disponíveis:</TextTitle>
+        {equipamentos.map((equipment, index) => (
+          <EquipmentContainer key={index}>
+            <Input
+              placeholder="Nome do equipamento"
+              value={equipment.name}
+              onChangeText={text =>
+                handleEquipamentosChange(index, 'name', text)
+              }
+            />
+            <Input
+              placeholder="Quantidade"
+              value={equipment.quantity}
+              onChangeText={
+                text => handleEquipamentosChange(index, 'quantity', text) // Corrigido de quantitity para quantity
+              }
+              keyboardType="numeric"
+            />
+          </EquipmentContainer>
+        ))}
+        <AddButton onPress={handleAddEquipment}>
+          <AddButtonText>+</AddButtonText>
+        </AddButton>
+
+        <ButtonContainer>
+          <SubmitButton onPress={handleSubmit}>
+            <ButtonText>Cadastrar</ButtonText>
+          </SubmitButton>
+          <CancelButton onPress={() => {}}>
+            <ButtonText>Cancelar</ButtonText>
+          </CancelButton>
+        </ButtonContainer>
+      </Container>
     </ScrollView>
   );
 }
-
-const localStyles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 50,
-  },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 40,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 5,
-    marginTop: 20,
-    marginHorizontal: 40,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  text: {
-    marginTop: 15,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});

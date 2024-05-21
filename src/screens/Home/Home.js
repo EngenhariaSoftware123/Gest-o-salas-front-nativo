@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StatusBar,
   Button,
@@ -14,6 +14,9 @@ import ProfileImage from '../../components/profilePicture';
 export default function Home({route}) {
   const {name, email, photo, roles} = route.params;
   const navigation = useNavigation();
+  useEffect(() => {
+    console.log(roles);
+  }, []);
 
   const solicitarManutencao = () => {
     navigation.navigate('Maintenance', {email: email});
@@ -43,19 +46,12 @@ export default function Home({route}) {
     });
     console.log('Solicitando cadastro de setor');
   };
-  const CadastrarEspaco = () => {
-    navigation.navigate('Space');
-    console.log('Solicantando cadastro de espaço');
-  };
 
-  const ReservaSolicitar = () => {
-    navigation.navigate('SolicitarReserva');
+  /* const SolicitarReserva = () => {
+    navigation.navigate('SolicitarReserva'), {email: email};
     console.log('Solictando Reserva');
-  };
-  const CancelarReserva = () => {
-    navigation.navigate('CancelarReserva', {email: email});
-    console.log('Solictando Reserva');
-  };
+  }; */
+
   const ConsultarEspaco = () => {
     navigation.navigate('ConsultarEspaços', {email: email});
     console.log('ConsultarEspaços');
@@ -92,9 +88,6 @@ export default function Home({route}) {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={ConsultarEspaco}>
           <Text style={styles.buttonText}>Consultar Espaços</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={CancelarReserva}>
-          <Text style={styles.buttonText}>Cancerlar Reserva</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

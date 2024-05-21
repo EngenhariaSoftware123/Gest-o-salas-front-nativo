@@ -25,6 +25,7 @@ export default function DetailsSpace({route}) {
     });
     console.log('Solictando Reserva');
   };
+
   useEffect(() => {
     axios
       .get(`https://gestao-de-espaco-api.onrender.com/space/get-spaces`)
