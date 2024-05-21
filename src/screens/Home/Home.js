@@ -49,6 +49,8 @@ export default function Home({route}) {
 
   /* const SolicitarReserva = () => {
     navigation.navigate('SolicitarReserva'), {email: email};
+  /* const SolicitarReserva = () => {
+    navigation.navigate('SolicitarReserva'), {email: email};
     console.log('Solictando Reserva');
   }; */
 
