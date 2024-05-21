@@ -59,6 +59,15 @@ export default function Home({route}) {
     console.log('ConsultarEspaços');
   };
 
+  const ReservaSemSolicitacao = () => {
+    navigation.navigate('ReservaSemSolicitacao');
+    console.log('Reservas sem solicitação');
+  };
+
+  const GerirServicos = () => {
+    navigation.navigate('GerirServicos');
+    console.log('Gerir Serviços');
+  };
   const [userName, setUserName] = useState(name);
   //console.log(userlogin);
   console.log(roles);
