@@ -1,17 +1,22 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Feed from '../screens/Profile/Profile';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import Home from '../screens/Home/Home';
-import Space from '../screens/Space/Space';
 import Consult from '../screens/Consult/Consult';
 import Profile from '../screens/Profile/Profile';
 
+// Carregar fontes de ícones
+MaterialCommunityIcons.loadFont();
+Icon.loadFont();
+Feather.loadFont();
+
 const Tab = createBottomTabNavigator();
 
-// Defina os ícones uma vez fora do componente de rotas
-const tabBarIcon = (name) => ({ color, size }) => <Icon name={name} color={color} size={size} />;
+const tabBarIcon = name => ({ color, size }) => (
+  <Feather name={name} color={color} size={size} />
+);
 
 export default function TabRoutes() {
   return (
@@ -19,8 +24,7 @@ export default function TabRoutes() {
       initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
-      }}
-    >
+      }}>
       <Tab.Screen
         name="Home"
         component={Home}
@@ -30,7 +34,6 @@ export default function TabRoutes() {
           ),
         }}
       />
-
       <Tab.Screen
         name="Consult"
         component={Consult}
@@ -39,7 +42,7 @@ export default function TabRoutes() {
           tabBarLabel: 'Consult',
         }}
       />
-       <Tab.Screen
+      <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
@@ -48,7 +51,7 @@ export default function TabRoutes() {
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
-      /> 
+      />
     </Tab.Navigator>
   );
 }

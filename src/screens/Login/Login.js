@@ -18,7 +18,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [userLogged, setUserLogged] = useState({});
   const [roles, setRoles] = useState([]);
-  const navigation = useNavigation(); // Importe useNavigation
+  const navigation = useNavigation();
 
   async function onGoogleButtonPress() {
     try {
@@ -29,12 +29,8 @@ const Login = () => {
           '733536154755-dj5g13i4jke8psktsk7a5eh09d4cn10m.apps.googleusercontent.com',
       });
       await GoogleSignin.signOut();
-      // Verifica se o dispositivo suporta os serviços do Google Play
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-      // Obtém o token de ID do usuário
       const {idToken, user} = await GoogleSignin.signIn();
-      // Navega para a tela Home com os dados do usuário como parâmetros
-      // Verifica o domínio do e-mail
       if (!user.email.endsWith('@uesb.edu.br')) {
         setError('Apenas email-s da uesb são permitido.');
         Alert.alert(
@@ -51,22 +47,24 @@ const Login = () => {
           email: user.email,
         },
       );
-
       setRoles(response.data);
-      navigation.navigate('Home', {
-        email: user.email,
-        name: user.givenName,
-        photo: user.photo,
-        roles: response.data.roles,
+      navigation.navigate('MainApp', {
+        screen: 'Tabs',
+        params: {
+          screen: 'Home',
+          params: {
+            email: user.email,
+            name: user.givenName,
+            photo: user.photo,
+            roles: response.data.roles,
+          },
+        },
       });
       setUserLogged(user);
       const googleCredential = await auth.GoogleAuthProvider.credential(
         idToken,
       );
-
-      // Faz login do usuário com a credencial
       return await auth().signInWithCredential(googleCredential);
-      // Cria uma credencial do Google com o token
     } catch (e) {
       console.log(e);
     }
@@ -87,7 +85,7 @@ const Login = () => {
         </View>
         <TouchableOpacity
           onPress={async () => {
-            await onGoogleButtonPress(); // Espera a conclusão da função onGoogleButtonPress()
+            await onGoogleButtonPress();
           }}
           disabled={loading}>
           <Image
@@ -95,7 +93,6 @@ const Login = () => {
             style={styles.imgLogin}
           />
         </TouchableOpacity>
-
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </ImageBackground>
     </View>

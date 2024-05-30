@@ -14,7 +14,7 @@ import {
   CancelButton,
   ButtonText,
 } from './Styles.js';
-import {
+/* import {
   Container,
   TextTitle,
   Input,
@@ -25,7 +25,7 @@ import {
   SubmitButton,
   CancelButton,
   ButtonText,
-} from './Styles.js';
+} from './Styles.js'; */
 
 export default function Space() {
   const [nomeEspaco, setNomeEspaco] = useState('');
