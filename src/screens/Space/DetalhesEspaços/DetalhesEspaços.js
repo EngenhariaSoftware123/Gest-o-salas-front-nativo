@@ -4,16 +4,17 @@ import axios from 'axios';
 import FavoriteSpaceItem from '../../../components/favoriteSpaceItem.js';
 import {useNavigation} from '@react-navigation/native';
 
-export default function DetailsSpace({route}) {
+export default function DetalhesEspaços({route}) {
   const {name, location, typeRoom, capacity, email, id, acessibility} =
     route.params;
   const navigation = useNavigation();
   const [spaces, setSpaces] = useState([]);
   const solicitarManutencao = () => {
-    navigation.navigate('Maintenance', {
+    navigation.navigate('Manutenção', {
       email: email,
       spaceName: name,
       spaceId: id,
+      location: location,
     });
     console.log('Solicitando manutenção...');
   };

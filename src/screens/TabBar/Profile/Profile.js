@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View} from './Styles.js'; // Aliased TextInput import
 import styled from 'styled-components/native';
-import ProfileImage from '../../components/profilePicture';
+import ProfileImage from '../../../components/profilePicture.js';
 import axios from 'axios';
 import {
   Text,
@@ -10,8 +10,8 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import FavoriteSpaceItem from '../../components/favoriteSpaceItem.js';
-export default function Feed({route}) {
+import FavoriteSpaceItem from '../../../components/favoriteSpaceItem.js';
+export default function feed({route}) {
   const {name, email, photo, roles} = route.params;
 
   const [userName, setUserName] = useState(name);

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {useNavigation} from '@react-navigation/native';
-import ProfileImage from '../../components/profilePicture';
+import ProfileImage from '../../../components/profilePicture';
 
 export default function Home({route}) {
   const {name, email, photo, roles} = route.params;
@@ -18,9 +18,11 @@ export default function Home({route}) {
   const [selectedRoles, setSelectedRoles] = useState([]);
 
   useEffect(() => {
-    setSelectedRoles(filtrarRoles(roles));
-    console.log(roles);
-  }, []);
+    if (roles) {
+      setSelectedRoles(filtrarRoles(roles));
+      console.log(roles);
+    }
+  }, [roles]);
 
   const filtrarRoles = roles => {
     const cargosInteressantes = [
@@ -36,7 +38,7 @@ export default function Home({route}) {
     );
   };
 
-  const handleRoleChange = (role) => {
+  const handleRoleChange = role => {
     if (selectedRoles.includes(role)) {
       setSelectedRoles(selectedRoles.filter(r => r !== role));
     } else {
@@ -56,6 +58,11 @@ export default function Home({route}) {
   const vincularGestorEspaço = () => {
     navigation.navigate('LinkManagersSpace');
     console.log('Solicitando cadastro do Gestor ao espaço');
+  };
+
+  const VizualizarEspaço = () => {
+    navigation.navigate('ConsultarEspaços', {email: email});
+    console.log('Visulizando os espaços');
   };
 
   const RegistarSetor = () => {
@@ -90,7 +97,7 @@ export default function Home({route}) {
 
   const [userName, setUserName] = useState(name);
 
-  const isMaster = selectedRoles.includes('MASTER');
+  const isMaster = selectedRoles.includes('ALUNO');
 
   return (
     <ScrollView>
@@ -105,25 +112,19 @@ export default function Home({route}) {
         <TouchableOpacity style={styles.button} onPress={verPerfil}>
           <Text style={styles.buttonText}>Meu perfil</Text>
         </TouchableOpacity>
-
-        {/* <Text style={styles.subtitle}>Selecione os cargos:</Text>
-        <Picker
-          selectedValue={selectedRoles}
-          onValueChange={handleRoleChange}
-          mode="dropdown">
-          {['ALUNO', 'PROFESSOR', 'GESTOR DE RESERVA', 'GESTOR DE SERVIÇO', 'SETOR', 'MASTER'].map((role) => (
-            <Picker.Item key={role} label={role} value={role} />
-          ))}
-        </Picker> */}
       </View>
       <View>
         {(isMaster || selectedRoles.includes('PROFESSOR')) && (
-          <TouchableOpacity style={styles.button} onPress={solicitarCadastroProfessor}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={solicitarCadastroProfessor}>
             <Text style={styles.buttonText}>Cadastrar Professor</Text>
           </TouchableOpacity>
         )}
         {(isMaster || selectedRoles.includes('GESTOR DE RESERVA')) && (
-          <TouchableOpacity style={styles.button} onPress={vincularGestorEspaço}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={vincularGestorEspaço}>
             <Text style={styles.buttonText}>Vincular Gestor ao Espaço</Text>
           </TouchableOpacity>
         )}
@@ -132,11 +133,11 @@ export default function Home({route}) {
             <TouchableOpacity style={styles.button} onPress={RegistarSetor}>
               <Text style={styles.buttonText}>Cadastrar setor</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={ConsultarEspaco}>
-              <Text style={styles.buttonText}>Consultar Espaços</Text>
-            </TouchableOpacity>
           </>
         )}
+        <TouchableOpacity style={styles.button} onPress={ConsultarEspaco}>
+          <Text style={styles.buttonText}>Consultar Espaços</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

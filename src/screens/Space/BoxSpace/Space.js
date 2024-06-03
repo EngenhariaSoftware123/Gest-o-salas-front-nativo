@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {ScrollView, Alert} from 'react-native';
-import CheckBox from '../../components/CheckBox';
+import CheckBox from '../../../components/CheckBox/index.js';
 import {
   Container,
   TextTitle,
@@ -14,18 +14,6 @@ import {
   CancelButton,
   ButtonText,
 } from './Styles.js';
-/* import {
-  Container,
-  TextTitle,
-  Input,
-  EquipmentContainer,
-  AddButton,
-  AddButtonText,
-  ButtonContainer,
-  SubmitButton,
-  CancelButton,
-  ButtonText,
-} from './Styles.js'; */
 
 export default function Space() {
   const [nomeEspaco, setNomeEspaco] = useState('');

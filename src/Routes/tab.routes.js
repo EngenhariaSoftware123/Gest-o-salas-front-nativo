@@ -3,9 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
-import Home from '../screens/Home/Home';
-import Consult from '../screens/Consult/Consult';
-import Profile from '../screens/Profile/Profile';
+import Home from '../screens/TabBar/Home/Home';
+import VizualizarEspaço from '../screens/TabBar/VizualizarEspaço/VizualizarEspaço';
+import Profile from '../screens/TabBar/Profile/Profile';
 
 // Carregar fontes de ícones
 MaterialCommunityIcons.loadFont();
@@ -35,8 +35,8 @@ export default function TabRoutes() {
         }}
       />
       <Tab.Screen
-        name="Consult"
-        component={Consult}
+        name="Espaços"
+        component={VizualizarEspaço}
         options={{
           tabBarIcon: tabBarIcon('book'),
           tabBarLabel: 'Consult',

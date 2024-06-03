@@ -6,7 +6,7 @@ import MainApp from './mainApp';
 import RegistroProfessor from '../screens/RegistrationTeacher/RegistrationTeacher';
 import LinkManagersSpace from '../screens/LinkManagersSpace/LinkManagersSpace';
 import RegistarSetor from '../screens/RegistrationSector/RegistrationSector';
-import SolicitarReserva from '../screens/SolicitarReserva/SolicitarReserva';
+import SolicitarReserva from '../screens/SolicitarReserva/SolictarReserva/SolicitarReserva';
 import GerirReserva from '../screens/SolicitarReserva/GerirReserva/GerirReserva';
 import ConsultSpace from '../screens/Space/ConsultarEspaco/ConsultarEspaco';
 import ReservaSemSolicitacao from '../screens/ReservaSemSolicitacao/ReservaSemSolicitacao';
