@@ -1,21 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  ScrollView,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import FavoriteSpaceItem from '../../../components/favoriteSpaceItem.js';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import {
+  Container,
+  Title,
+  ContainerBox,
+  Button,
+  ButtonText,
+  GridContainer,
+} from './Styles.js';
 
-export default function ConsultSpace({route}) {
+export default function ConsultarEspaço({ route }) {
   const navigation = useNavigation();
   const [spaces, setSpaces] = useState([]);
-  const {email} = route.params;
+  const { email } = route.params;
+
   const ReservaSemSolicitacao = () => {
-    navigation.navigate('ReservaSemSolicitacao');
+    navigation.navigate('ReservaSemSolicitacao', { email: email });
     console.log('Reservas sem solicitação');
   };
 
@@ -23,10 +25,12 @@ export default function ConsultSpace({route}) {
     navigation.navigate('GerirServicos');
     console.log('Gerir Serviços');
   };
+
   const GerirReserva = () => {
-    navigation.navigate('GerirReserva', {email: email});
+    navigation.navigate('GerirReserva', { email: email });
     console.log('Gerir  Reserva');
   };
+
   useEffect(() => {
     axios
       .get('https://gestao-de-espaco-api.onrender.com/space/get-spaces')
@@ -45,23 +49,23 @@ export default function ConsultSpace({route}) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Espaços</Text>
-      <View style={styles.containerBox}>
-        <TouchableOpacity style={styles.button} onPress={GerirReserva}>
-          <Text style={styles.buttonText}>Gerir Reserva</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={ReservaSemSolicitacao}>
-          <Text style={styles.buttonText}>Reserva sem solicitação</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={GerirServicos}>
-          <Text style={styles.buttonText}>Gerir Serviços</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={CadastrarEspaco}>
-          <Text style={styles.buttonText}>Cadastrar Espaço</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView contentContainerStyle={styles.gridContainer}>
+    <Container>
+      <Title>Espaços</Title>
+      <ContainerBox>
+        <Button onPress={GerirReserva}>
+          <ButtonText>Gerir Reserva</ButtonText>
+        </Button>
+        <Button onPress={ReservaSemSolicitacao}>
+          <ButtonText>Reserva sem solicitação</ButtonText>
+        </Button>
+        <Button onPress={GerirServicos}>
+          <ButtonText>Gerir Serviços</ButtonText>
+        </Button>
+        <Button onPress={CadastrarEspaco}>
+          <ButtonText>Cadastrar Espaço</ButtonText>
+        </Button>
+      </ContainerBox>
+      <GridContainer>
         {spaces.map((space, index) => (
           <FavoriteSpaceItem
             key={index}
@@ -76,47 +80,7 @@ export default function ConsultSpace({route}) {
             }}
           />
         ))}
-      </ScrollView>
-    </View>
+      </GridContainer>
+    </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  containerBox: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between', // Alternativamente, use 'center' ou 'space-around'
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    borderRadius: 5,
-    marginBottom: 10, // Ajuste conforme necessário
-    marginHorizontal: 5, // Ajuste conforme necessário
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  gridContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-});
