@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ScrollView, Alert} from 'react-native';
 import {View, TextTitle} from './Styles.js'; // Importe seus estilos
 import axios from 'axios';
-import {CancelarReservaSpace} from '../../../components/SolicitarReservasItem/SolicitarReservasItem.js';
+import {CancelarReservaSpace} from '../SolicitarReservasItem/SolicitarReservasItem.js';
 
 export default function GerirReserva({route}) {
   const {email, pavilion, name, roles} = route.params || {};
@@ -15,7 +15,9 @@ export default function GerirReserva({route}) {
 
   const fetchReservas = () => {
     axios
-      .get(`https://gestao-de-espaco-api.onrender.com/space/get-space-requests`)
+      .get(
+        `https://gestao-de-espaco-api.onrender.com/space/get-space-requests/${email}`,
+      )
       .then(response => {
         setReservas(response.data);
       })
@@ -24,12 +26,11 @@ export default function GerirReserva({route}) {
       });
   };
 
-  const handleStatusChange = async (id, status) => {
+  const handleStatusChange = (id, status) => {
     console.log('STATUS', status);
-    console.log(id);
     axios
       .put(
-        `https://gestao-de-espaco-api.onrender.com/space/update-status-space-request/${id}`,
+        `https://gestao-de-espaco-api.onrender.com/maintenance/update-status-maintenance/${id}`,
         {
           status: status,
         },

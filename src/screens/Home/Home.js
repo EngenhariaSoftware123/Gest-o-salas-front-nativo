@@ -14,9 +14,10 @@ import ProfileImage from '../../components/profilePicture';
 export default function Home({route}) {
   const {name, email, photo, roles} = route.params;
   const navigation = useNavigation();
+
   useEffect(() => {
     console.log(roles);
-  }, []);
+  }, [roles]);
 
   const solicitarManutencao = () => {
     navigation.navigate('Maintenance', {email: email});
@@ -44,19 +45,22 @@ export default function Home({route}) {
       photo: photo,
       name: name,
     });
-    console.log('Solicitando cadastro de setor');
+    console.log('Visualizando perfil');
   };
 
-  /* const SolicitarReserva = () => {
-    navigation.navigate('SolicitarReserva'), {email: email};
-  /* const SolicitarReserva = () => {
-    navigation.navigate('SolicitarReserva'), {email: email};
-    console.log('Solictando Reserva');
-  }; */
+  const CadastrarEspaco = () => {
+    navigation.navigate('Space');
+    console.log('Solicantando cadastro de espaço');
+  };
+
+  const GerirReserva = () => {
+    navigation.navigate('GerirReserva', {email: email});
+    console.log('Gerir Reserva');
+  };
 
   const ConsultarEspaco = () => {
     navigation.navigate('ConsultarEspaços', {email: email});
-    console.log('ConsultarEspaços');
+    console.log('Consultando espaços');
   };
 
   const ReservaSemSolicitacao = () => {
@@ -66,11 +70,13 @@ export default function Home({route}) {
 
   const GerirServicos = () => {
     navigation.navigate('GerirServicos');
-    console.log('Gerir Serviços');
+    console.log('Gerindo serviços');
   };
+
   const [userName, setUserName] = useState(name);
-  //console.log(userlogin);
-  console.log(roles);
+
+  const isAlunoOnly = roles.length === 1 && roles.includes('aluno');
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -84,22 +90,45 @@ export default function Home({route}) {
         <TouchableOpacity style={styles.button} onPress={verPerfil}>
           <Text style={styles.buttonText}>Meu perfil</Text>
         </TouchableOpacity>
-      </View>
-      <View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={solicitarCadastroProfessor}>
-          <Text style={styles.buttonText}>Cadastrar Professor</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={vincularGestorEspaço}>
-          <Text style={styles.buttonText}>Vincular Gestor ao Espaço</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={RegistarSetor}>
-          <Text style={styles.buttonText}>Cadastrar setor</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={ConsultarEspaco}>
-          <Text style={styles.buttonText}>Consultar Espaços</Text>
-        </TouchableOpacity>
+
+        {isAlunoOnly ? (
+          <TouchableOpacity style={styles.button} onPress={ConsultarEspaco}>
+            <Text style={styles.buttonText}>Consultar Espaços</Text>
+          </TouchableOpacity>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={solicitarCadastroProfessor}>
+              <Text style={styles.buttonText}>Cadastrar Professor</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={vincularGestorEspaço}>
+              <Text style={styles.buttonText}>Vincular Gestor ao Espaço</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={RegistarSetor}>
+              <Text style={styles.buttonText}>Cadastrar setor</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={ConsultarEspaco}>
+              <Text style={styles.buttonText}>Consultar Espaços</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={GerirReserva}>
+              <Text style={styles.buttonText}>Gerir Reserva</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={CadastrarEspaco}>
+              <Text style={styles.buttonText}>Cadastrar Espaço</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={ReservaSemSolicitacao}>
+              <Text style={styles.buttonText}>Reserva sem solicitação</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={GerirServicos}>
+              <Text style={styles.buttonText}>Gerir Serviços</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </ScrollView>
   );

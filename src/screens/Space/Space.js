@@ -14,37 +14,24 @@ import {
   CancelButton,
   ButtonText,
 } from './Styles.js';
-import {
-  Container,
-  TextTitle,
-  Input,
-  EquipmentContainer,
-  AddButton,
-  AddButtonText,
-  ButtonContainer,
-  SubmitButton,
-  CancelButton,
-  ButtonText,
-} from './Styles.js';
 
 export default function Space() {
   const [nomeEspaco, setNomeEspaco] = useState('');
   const [localizacao, setLocalizacao] = useState('');
   const [capacidade, setCapacidade] = useState('');
   const [tipodesala, setTipodeSala] = useState('');
-  const [equipamentos, setEquipamentos] = useState([{name: '', quantity: '0'}]);
+  const [equipamentos, setEquipamentos] = useState([
+    {name: '', quantidade: ''},
+  ]);
 
   const handleAddEquipment = () => {
-    setEquipamentos([...equipamentos, {name: '', quantity: '0'}]);
+    setEquipamentos([...equipamentos, {name: '', quantidade: ''}]);
   };
 
   const handleEquipamentosChange = (index, field, value) => {
     const newEquipamentos = equipamentos.map((equipamento, i) => {
       if (i === index) {
-        return {
-          ...equipamento,
-          [field]: field === 'quantity' ? value.replace(/[^0-9]/g, '') : value,
-        };
+        return {...equipamento, [field]: value};
       }
       return equipamento;
     });
@@ -52,31 +39,30 @@ export default function Space() {
   };
 
   const handleSubmit = async () => {
-    const acessibility = optionsMultiple.map(option => option.text);
-    axios
-      .post('https://gestao-de-espaco-api.onrender.com/space/create-space', {
-        name: nomeEspaco,
-        pavilion: localizacao,
-        capacity: parseInt(capacidade, 10), // Convertendo capacidade para número
-        typeRoom: tipodesala,
-        acessibility: acessibility,
-        available_equipments: equipamentos.map(equipamento => ({
-          ...equipamento,
-          quantity: parseInt(equipamento.quantity, 10), // Convertendo quantity para número
-        })),
-      })
-      .then(response => {
-        Alert.alert('Solicitação de reserva cadastrada');
-      })
-      .catch(error => {
-        console.log(error);
-        Alert.alert(
-          'Erro',
-          'Ocorreu um erro, reserva não solicitada',
-          [{text: 'OK', onPress: () => {}}],
-          {cancelable: false},
-        );
-      });
+    try {
+      await axios.post(
+        'https://gestao-de-espaco-api.onrender.com/space/create-space',
+        {
+          data: {
+            name: nomeEspaco,
+            pavilion: localizacao,
+            capacity: capacidade,
+            typeRoom: tipodesala,
+            acessibilty: ['cadeira reclinaveis'],
+            available_equipments: equipamentos,
+            selectedOptions: optionsMultiple,
+          },
+        },
+      );
+      Alert.alert('Solicitação de reserva cadastrada');
+    } catch (error) {
+      Alert.alert(
+        'Erro',
+        'Ocorreu um erro, reserva não solicitada',
+        [{text: 'OK', onPress: () => {}}],
+        {cancelable: false},
+      );
+    }
   };
 
   const optionsMultiple = [
@@ -102,7 +88,7 @@ export default function Space() {
         />
         <EquipmentContainer>
           <Input
-            onChangeText={text => setCapacidade(text.replace(/[^0-9]/g, ''))}
+            onChangeText={text => setCapacidade(text)}
             value={capacidade}
             placeholder="Capacidade"
             keyboardType="numeric"
@@ -129,9 +115,9 @@ export default function Space() {
             />
             <Input
               placeholder="Quantidade"
-              value={equipment.quantity}
-              onChangeText={
-                text => handleEquipamentosChange(index, 'quantity', text) // Corrigido de quantitity para quantity
+              value={equipment.quantidade}
+              onChangeText={text =>
+                handleEquipamentosChange(index, 'quantidade', text)
               }
               keyboardType="numeric"
             />
