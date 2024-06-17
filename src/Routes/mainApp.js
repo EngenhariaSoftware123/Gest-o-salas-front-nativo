@@ -3,12 +3,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import TabRoutes from './tab.routes';
 import Space from '../screens/Space/BoxSpace/Space';
 import DetalhesEspaços from '../screens/Space/DetalhesEspaços/DetalhesEspaços';
-import RegistrationTeacher from '../screens/RegistrationTeacher/RegistrationTeacher';
-import LinkManagersSpace from '../screens/LinkManagersSpace/LinkManagersSpace';
+import CadastrarProfessor from '../screens/CadastrarProfessor/CadastrarProfessor';
+import LinkManagersSpace from '../screens/GestorDeEspaço/GestorDeEspaço';
 import RegistrationSector from '../screens/RegistrationSector/RegistrationSector';
 import SolicitarReserva from '../screens/SolicitarReserva/SolictarReserva/SolicitarReserva';
 import GerirReserva from '../screens/SolicitarReserva/GerirReserva/GerirReserva';
-import ConsultSpace from '../screens/Space/ConsultarEspaco/ConsultarEspaco';
+import ConsultarEspaço from '../screens/Space/ConsultarEspaco/ConsultarEspaco';
 import ReservaSemSolicitacao from '../screens/ReservaSemSolicitacao/ReservaSemSolicitacao';
 import GerirServicos from '../screens/GerirServicos/GerirServicos';
 import GerirDetalhes from '../screens/GerirServicos/GerirDetalhes/GerirDetalhes';
@@ -25,14 +25,14 @@ export default function MainApp() {
       <Stack.Screen name="Space" component={Space} />
       <Stack.Screen name="DetalhesEspaços" component={DetalhesEspaços} />
       <Stack.Screen
-        name="RegistrationTeacher"
-        component={RegistrationTeacher}
+        name="CadastrarProfessor"
+        component={CadastrarProfessor}
       />
       <Stack.Screen name="LinkManagersSpace" component={LinkManagersSpace} />
       <Stack.Screen name="RegistrationSector" component={RegistrationSector} />
       <Stack.Screen name="SolicitarReserva" component={SolicitarReserva} />
       <Stack.Screen name="GerirReserva" component={GerirReserva} />
-      <Stack.Screen name="ConsultarEspaços" component={ConsultSpace} />
+      <Stack.Screen name="ConsultarEspaços" component={ConsultarEspaço} />
       <Stack.Screen
         name="ReservaSemSolicitacao"
         component={ReservaSemSolicitacao}

@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import {TextInput} from 'react-native-gesture-handler';
+import styled from 'styled-components/native'; // Importando do styled-components/native para uso com React Native
+import { TextInput } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;
@@ -14,18 +14,21 @@ export const TextTitle = styled.Text`
 `;
 
 export const TextLabel = styled.Text`
-  font-weight: 20px;
   margin-top: 10px;
+  font-size: 18px; /* Ajustando o tamanho da fonte */
+  color: black; /* Cor da fonte preta */
 `;
 
-export const StyledTextInput = styled.TextInput`
-  height: 100xp;
+export const StyledTextInput = styled(TextInput)`
+  height: 40px; /* Corrigindo o valor da altura */
   border-width: 1px;
   border-color: #ccc;
   border-radius: 5px;
   padding: 10px;
   margin-top: 5px;
   margin-bottom: 15px;
+  font-size: 18px; /* Aumentando o tamanho da fonte */
+  color: black; /* Cor da fonte preta */
 `;
 
 export const TouchableOpacity = styled.TouchableOpacity`

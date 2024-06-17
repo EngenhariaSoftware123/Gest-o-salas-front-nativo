@@ -21,9 +21,7 @@ export default function AlterarEspaco() {
     <ScrollView>
       <View>
         <TextTitle>Espaço cadastrado</TextTitle>
-        <BoxLinha>
-          
-        </BoxLinha>
+        <BoxLinha></BoxLinha>
       </View>
     </ScrollView>
   );

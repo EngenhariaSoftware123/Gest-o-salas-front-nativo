@@ -49,15 +49,14 @@ export const ViewHorario = styled.View`
   margin-bottom: 10px; /* Adiciona um espaço na parte inferior */
 `;
 export const ViewTextHorario = styled.View`
-  margin-top: 10px;
+  margin-top: 15px;
   padding: 5px;
   flex-direction: row; /* Para posicionar os componentes lado a lado */
-  justify-content: center; /* Para adicionar espaço entre os componentes */
-
-  /* Adiciona um espaço na parte inferior */
+  justify-content: space-between; /* Para adicionar espaço entre os componentes */
 `;
 
 export const TextHorario = styled.Text`
+  margin-top: 20px;
   font-size: 20px;
   color: black;
 `;

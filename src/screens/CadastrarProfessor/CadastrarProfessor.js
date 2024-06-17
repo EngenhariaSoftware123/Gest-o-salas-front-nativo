@@ -66,6 +66,17 @@ export default function RegistroProfessor() {
     console.log('E-mail do Professor', emailProfessor);
   };
 
+  const handleCellphoneInput = text => {
+    const numericText = text.replace(/[^0-9]/g, '');
+    setNumeroCelular(numericText);
+  };
+
+  const handleDepartamentoChange = (selectedOption, selectedText) => {
+    console.log('ID Selecionado: ', selectedOption);
+    console.log('Texto Selecionado: ', selectedText);
+    setDepartamento(selectedText); // Armazena o texto da opção selecionada
+  };
+
   return (
     <ScrollView>
       <Container>
@@ -85,14 +96,14 @@ export default function RegistroProfessor() {
           onChangeText={text => setNumeroDaMatricula(text)}
         />
         <TextLabel>Departamento:</TextLabel>
-        <CheckBox options={Departamento} onChange={op => alert(op)} />
+        <CheckBox options={Departamento} onChange={handleDepartamentoChange} />
 
         <TextLabel>Contato do Professor</TextLabel>
         <StyledTextInput
-          multiline
           placeholder="Celular/Telefone"
           value={numeroCelular}
-          onChangeText={text => setNumeroCelular(text)}
+          onChangeText={handleCellphoneInput}
+          keyboardType="numeric"
         />
         <TextLabel>Email do Professor</TextLabel>
         <StyledTextInput

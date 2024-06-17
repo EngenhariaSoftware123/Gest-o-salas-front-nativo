@@ -72,6 +72,11 @@ export default function RegistroSetor() {
     setSelectedSpaceName(spaceName);
   };
 
+  const handleCellphoneInput = text => {
+    const numericText = text.replace(/[^0-9]/g, '');
+    setNumeroCelular(numericText);
+  };
+
   return (
     <ScrollView>
       <Container>
@@ -114,8 +119,8 @@ export default function RegistroSetor() {
         <StyledTextInput
           multiline
           placeholder="Celular/Telefone"
-          value={NumeroCelular}
-          onChangeText={text => setNumeroCelular(text)}
+         onChangeText={handleCellphoneInput}
+          keyboardType="numeric"
         />
 
         <TextLabel>Email</TextLabel>

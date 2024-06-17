@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   TextTitle,
@@ -6,22 +6,25 @@ import {
   StyledTextInput,
   TouchableOpacity,
   TextButton,
-} from './Styles.js'; // Aliased TextInput import
+} from './Styles.js'; // Importando estilos corretamente
 import axios from 'axios';
-import {Picker} from '@react-native-picker/picker';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import CheckBox from '../../components/CheckBox/index.js';
 
-export default function LinkManagersSpace({route}) {
+export default function GestorDeEspaço({ route }) {
   const [selectedSpaceId, setSelectedSpaceId] = useState(0);
   const [selectedSpaceName, setSelectedSpaceName] = useState('');
   const [emailGestor, setEmailGestor] = useState('');
-  const [pesquisarLocal, setpesquisarLocal] = useState('');
-  const [reserva, setreserva] = useState('');
-  const [mostrarCampo, setMostrarCampo] = useState(false); // Estado para controlar a visibilidade do campo combinado
+  const [reserva, setReserva] = useState(''); // Estado para armazenar o tipo de reserva ou serviço selecionado
   const [spaces, setSpaces] = useState([]);
 
+  const Reserva = [
+    { text: 'Reserva', id: 1 },
+    { text: 'Serviço', id: 2 },
+  ];
+
   useEffect(() => {
-    //console.log(email);
     axios
       .get('https://gestao-de-espaco-api.onrender.com/space/get-spaces')
       .then(function (response) {
@@ -32,19 +35,20 @@ export default function LinkManagersSpace({route}) {
         console.log(error);
       });
   }, []);
+
   const handleSpaceChange = (spaceId, spaceName) => {
     setSelectedSpaceId(spaceId);
     setSelectedSpaceName(spaceName);
+    console.log('Pesquisar Local: ', spaceName); // Imprime o nome do espaço selecionado no console
   };
 
   const handleInputChange = () => {
-    const combinedText = `${emailGestor};${pesquisarLocal};${reserva}`;
+    const combinedText = `${emailGestor};${selectedSpaceName};${reserva}`;
     console.log('Email do Gestor: ', emailGestor);
-    console.log('Pesquisar Local: ', pesquisarLocal);
+    console.log('Pesquisar Local: ', selectedSpaceName);
     console.log('Reserva ou de Serviço: ', reserva);
     console.log('Texto Combinado: ', combinedText);
 
-    console.log(emailGestor); // Mostra o campo combinado após pressionar o botão "Pesquisar"
     axios
       .post(
         'https://gestao-de-espaco-api.onrender.com/manager/create-manager',
@@ -55,19 +59,26 @@ export default function LinkManagersSpace({route}) {
         },
       )
       .then(function (response) {
-        Alert.alert(`gestor cadastrada`);
+        Alert.alert(`Gestor cadastrado com sucesso`);
         console.log(response.data);
       })
       .catch(function (error) {
+        console.log('Erro na requisição POST:', error);
         Alert.alert(
           'Erro',
-          'ocorreu um erro gestor não cadastrado',
-          [{text: 'OK', onPress: () => {}}],
-          {cancelable: false},
+          'Ocorreu um erro ao cadastrar o gestor',
+          [{ text: 'OK', onPress: () => { } }],
+          { cancelable: false },
         );
-        console.log(error);
       });
   };
+
+  const handleReservaChange = (selectedOption, selectedText) => {
+    console.log('ID Selecionado: ', selectedOption);
+    console.log('Texto Selecionado: ', selectedText);
+    setReserva(selectedText); // Armazena o texto da opção selecionada
+  };
+
   return (
     <Container>
       <TextTitle>Vincular Gestor de Espaço</TextTitle>
@@ -84,7 +95,7 @@ export default function LinkManagersSpace({route}) {
       <Picker
         selectedValue={selectedSpaceId}
         onValueChange={(itemValue, itemIndex) =>
-          handleSpaceChange(itemValue, spaces[itemIndex - 1].space.name)
+          handleSpaceChange(itemValue, spaces[itemIndex - 1]?.space.name || '')
         }>
         <Picker.Item label="Selecione o local" value="" />
         {spaces.map(space => (
@@ -95,24 +106,9 @@ export default function LinkManagersSpace({route}) {
           />
         ))}
       </Picker>
-      {selectedSpaceName ? (
-        <TextLabel>Espaço selecionado: {selectedSpaceName}</TextLabel>
-      ) : null}
 
-      {/* <StyledTextInput
-        multiline
-        placeholder="Procure pela pesquisar local"
-        value={pesquisarLocal}
-        onChangeText={text => setpesquisarLocal(text)}
-      /> */}
-
-      <TextLabel>Reserva ou de Serviçor</TextLabel>
-      <StyledTextInput
-        multiline
-        placeholder="Reserva ou de Serviço"
-        value={reserva}
-        onChangeText={text => setreserva(text)}
-      />
+      <TextLabel>Reserva ou Serviço</TextLabel>
+      <CheckBox options={Reserva} onChange={handleReservaChange} />
 
       <TouchableOpacity onPress={handleInputChange}>
         <TextButton>Vincular</TextButton>

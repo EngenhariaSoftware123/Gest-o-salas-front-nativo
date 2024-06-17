@@ -74,9 +74,6 @@ export default function SolicitarReserva({route}) {
     const selectedDate = new Date(day.dateString);
     const today = new Date();
 
-    // Configurar a hora de hoje para 00:00:00 para comparar apenas a data
-    today.setHours(0, 0, 0, 0);
-
     if (selectedDate < today) {
       Alert.alert(
         'Atenção',
@@ -104,15 +101,6 @@ export default function SolicitarReserva({route}) {
   };
 
   const handleHorarioFinalChange = newDate => {
-    const today = new Date();
-    // Verificar se o horário final é anterior ao horário atual
-    /*  if (newDate < today) {
-      Alert.alert(
-        'Atenção',
-        'Você não pode selecionar um horário final anterior ao horário atual.',
-      );
-      return;
-    } */
     setHorarioFinal(newDate);
     console.log(
       'Horário Final:',
@@ -138,21 +126,24 @@ export default function SolicitarReserva({route}) {
       return;
     }
 
-    const horaFormatadaInicio =
-      new Date(horarioInicio).toISOString().substr(11, 12) + 'Z';
+    const horaFormatadaInicio = horarioInicio.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    const horaFormatadaFinal = horarioFinal.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
     console.log('Horário Inicial Formatado:', horaFormatadaInicio);
-
-    const horaFormatadaFinal =
-      new Date(horarioFinal).toISOString().substr(11, 12) + 'Z';
     console.log('Horário Final Formatado:', horaFormatadaFinal);
-
     axios
       .post(
         'https://gestao-de-espaco-api.onrender.com/space/create-space-request',
         {
           spaceId: spaceId,
-          initial_Period: `${dataInicio}T${horaFormatadaInicio}`,
-          end_Period: `${dataFinal}T${horaFormatadaFinal}`,
+          initial_Period: `${dataInicio}T${horaFormatadaInicio}:00.000Z`,
+          end_Period: `${dataFinal}T${horaFormatadaFinal}:00.000Z`,
           email: email,
         },
       )
@@ -170,16 +161,15 @@ export default function SolicitarReserva({route}) {
   };
 
   console.log('Inicio:', dataInicio);
-  console.log('final:', dataFinal);
-  console.log('horario Inicio', horarioInicio);
-  console.log('horario Final', horarioFinal);
+  console.log('Final:', dataFinal);
+  console.log('Horário Início', horarioInicio);
+  console.log('Horário Final', horarioFinal);
 
   return (
     <ScrollView>
       <View>
         <TextTitle>Solicitar espaço</TextTitle>
-        {/* <TextTitle>{spaceName}</TextTitle>
-         */}
+        {/* <TextTitle>{spaceName}</TextTitle> */}
         {/*<Picker
           selectedValue={selectedPavilhaoId}
           onValueChange={itemValue => setselectedPavilhaoId(itemValue)}>
@@ -229,9 +219,11 @@ export default function SolicitarReserva({route}) {
         />
 
         <ViewTextHorario>
-          <TextHorario>Horario Inicio</TextHorario>
-          <TextHorario>Horario Final</TextHorario>
+          <TextHorario>Horário Início</TextHorario>
+          <TextHorario>Horário Final</TextHorario>
         </ViewTextHorario>
+        <TextHorario>AM = antes do meio-dia</TextHorario>
+        <TextHorario>PM = após o meio-dia</TextHorario>
         <ViewHorario>
           <DatePicker
             date={horarioInicio}

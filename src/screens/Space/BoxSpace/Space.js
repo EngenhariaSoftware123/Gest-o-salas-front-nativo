@@ -21,6 +21,7 @@ export default function Space() {
   const [capacidade, setCapacidade] = useState('');
   const [tipodesala, setTipodeSala] = useState('');
   const [equipamentos, setEquipamentos] = useState([{name: '', quantity: '0'}]);
+  const [selectedAccessibility, setSelectedAccessibility] = useState([]);
 
   const handleAddEquipment = () => {
     setEquipamentos([...equipamentos, {name: '', quantity: '0'}]);
@@ -40,31 +41,38 @@ export default function Space() {
   };
 
   const handleSubmit = async () => {
-    const acessibility = optionsMultiple.map(option => option.text);
-    axios
-      .post('https://gestao-de-espaco-api.onrender.com/space/create-space', {
-        name: nomeEspaco,
-        pavilion: localizacao,
-        capacity: parseInt(capacidade, 10), // Convertendo capacidade para número
-        typeRoom: tipodesala,
-        acessibility: acessibility,
-        available_equipments: equipamentos.map(equipamento => ({
-          ...equipamento,
-          quantity: parseInt(equipamento.quantity, 10), // Convertendo quantity para número
-        })),
-      })
-      .then(response => {
-        Alert.alert('Solicitação de reserva cadastrada');
-      })
-      .catch(error => {
-        console.log(error);
-        Alert.alert(
-          'Erro',
-          'Ocorreu um erro, reserva não solicitada',
-          [{text: 'OK', onPress: () => {}}],
-          {cancelable: false},
-        );
-      });
+    try {
+      const acessibility = selectedAccessibility.map(option => option.text);
+      const response = await axios.post(
+        'https://gestao-de-espaco-api.onrender.com/space/create-space',
+        {
+          name: nomeEspaco,
+          pavilion: localizacao,
+          capacity: parseInt(capacidade, 10), // Convertendo capacidade para número
+          typeRoom: tipodesala,
+          accessibility: acessibility, // Corrigido de acessibility para accessibility
+          available_equipments: equipamentos.map(equipamento => ({
+            ...equipamento,
+            quantity: parseInt(equipamento.quantity, 10), // Convertendo quantity para número
+          })),
+        },
+      );
+      Alert.alert('Solicitação de reserva cadastrada');
+    } catch (error) {
+      console.error(error);
+      Alert.alert(
+        'Erro',
+        'Ocorreu um erro, reserva não solicitada',
+        [{text: 'OK', onPress: () => {}}],
+        {cancelable: false},
+      );
+    }
+  };
+
+  const handleEspacoChange = (selectedOption, selectedText) => {
+    console.log('ID Selecionado: ', selectedOption);
+    console.log('Texto Selecionado: ', selectedText);
+    setSelectedAccessibility(selectedText); // Atualizei para setSelectedAccessibility
   };
 
   const optionsMultiple = [
@@ -103,9 +111,13 @@ export default function Space() {
         </EquipmentContainer>
 
         <TextTitle>Recursos disponíveis:</TextTitle>
-        <CheckBox options={optionsMultiple} multiple />
+        <CheckBox
+          options={optionsMultiple}
+          multiple
+          onChange={handleEspacoChange}
+        />
 
-        <TextTitle>Equipamento disponíveis:</TextTitle>
+        <TextTitle>Equipamentos disponíveis:</TextTitle>
         {equipamentos.map((equipment, index) => (
           <EquipmentContainer key={index}>
             <Input
@@ -118,8 +130,8 @@ export default function Space() {
             <Input
               placeholder="Quantidade"
               value={equipment.quantity}
-              onChangeText={
-                text => handleEquipamentosChange(index, 'quantity', text) // Corrigido de quantitity para quantity
+              onChangeText={text =>
+                handleEquipamentosChange(index, 'quantity', text)
               }
               keyboardType="numeric"
             />

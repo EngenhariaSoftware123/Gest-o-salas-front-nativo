@@ -57,8 +57,8 @@ export default function GerirReserva({route}) {
       });
   };
 
-  const navigateToReservaDetalhes = () => {
-    navigation.navigate('GerirReservaDetalhes');
+  const navigateToReservaDetalhes = reservaId => {
+    navigation.navigate('GerirReservaDetalhes', {reservaId});
   };
 
   return (
@@ -77,6 +77,7 @@ export default function GerirReserva({route}) {
                 key={reserva.id}
                 reserva={{...reserva, sala}}
                 handleStatusChange={handleStatusChange}
+                onPress={() => navigateToReservaDetalhes(reserva)}
               />
             );
           } else {

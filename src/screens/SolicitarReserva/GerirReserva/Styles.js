@@ -6,7 +6,7 @@ export const View = styled.View`
 `;
 
 export const BoxGerir = styled.View`
-  border: 3px solid #cccc;
+  border: 3px solid #cccccc;
   flex: 1;
   padding: 20px;
   margin: 5px;
@@ -20,8 +20,8 @@ export const TextTitle = styled.Text`
   margin-top: 5px;
 `;
 
-export const Textbox = styled.TextInput`
-  border: 1px solid #cccc;
+export const TextInput = styled.TextInput`
+  border: 1px solid #cccccc;
   padding: 10px;
   margin-top: 10px;
   font-size: 20px;

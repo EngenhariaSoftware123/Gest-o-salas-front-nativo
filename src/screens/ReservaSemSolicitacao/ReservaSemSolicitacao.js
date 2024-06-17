@@ -10,7 +10,7 @@ import {
   ViewHorario,
   ViewTextHorario,
   TextHorario,
-} from './Styles'; // Importe o componente ViewHorario
+} from './Styles';
 import {Picker} from '@react-native-picker/picker';
 import {Calendar} from 'react-native-calendars';
 import DatePicker from 'react-native-date-picker';
@@ -74,9 +74,6 @@ export default function ReservaSemSolicitacao({route}) {
     const selectedDate = new Date(day.dateString);
     const today = new Date();
 
-    // Configurar a hora de hoje para 00:00:00 para comparar apenas a data
-    today.setHours(0, 0, 0, 0);
-
     if (selectedDate < today) {
       Alert.alert(
         'Atenção',
@@ -104,15 +101,6 @@ export default function ReservaSemSolicitacao({route}) {
   };
 
   const handleHorarioFinalChange = newDate => {
-    const today = new Date();
-    // Verificar se o horário final é anterior ao horário atual
-    /*  if (newDate < today) {
-      Alert.alert(
-        'Atenção',
-        'Você não pode selecionar um horário final anterior ao horário atual.',
-      );
-      return;
-    } */
     setHorarioFinal(newDate);
     console.log(
       'Horário Final:',
@@ -138,12 +126,16 @@ export default function ReservaSemSolicitacao({route}) {
       return;
     }
 
-    const horaFormatadaInicio =
-      new Date(horarioInicio).toISOString().substr(11, 12) + 'Z';
-    console.log('Horário Inicial Formatado:', horaFormatadaInicio);
+    const horaFormatadaInicio = horarioInicio.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    const horaFormatadaFinal = horarioFinal.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
 
-    const horaFormatadaFinal =
-      new Date(horarioFinal).toISOString().substr(11, 12) + 'Z';
+    console.log('Horário Inicial Formatado:', horaFormatadaInicio);
     console.log('Horário Final Formatado:', horaFormatadaFinal);
 
     axios
@@ -151,14 +143,31 @@ export default function ReservaSemSolicitacao({route}) {
         'https://gestao-de-espaco-api.onrender.com/space/create-space-request',
         {
           spaceId: spaceId,
-          initial_Period: `${dataInicio}T${horaFormatadaInicio}`,
-          end_Period: `${dataFinal}T${horaFormatadaFinal}`,
+          initial_Period: `${dataInicio}T${horaFormatadaInicio}:00.000Z`,
+          end_Period: `${dataFinal}T${horaFormatadaFinal}:00.000Z`,
           email: email,
-          status: 'CONCLUIDO',
         },
       )
       .then(function (response) {
         Alert.alert('Solicitação de reserva cadastrada');
+
+        const requestId = response.data.id;
+
+        axios
+          .put(
+            `https://gestao-de-espaco-api.onrender.com/space/update-status-space-request/${requestId}`,
+            {
+              status: 'CONCLUIDO',
+            },
+          )
+          .then(response => {
+            Alert.alert('Status da reserva atualizado com sucesso');
+            buscarReservas(); // Atualiza a lista após alterar o status
+          })
+          .catch(error => {
+            console.log(error);
+            Alert.alert('Erro ao atualizar o status da reserva');
+          });
       })
       .catch(function (error) {
         Alert.alert(
@@ -171,16 +180,15 @@ export default function ReservaSemSolicitacao({route}) {
   };
 
   console.log('Inicio:', dataInicio);
-  console.log('final:', dataFinal);
-  console.log('horario Inicio', horarioInicio);
-  console.log('horario Final', horarioFinal);
+  console.log('Final:', dataFinal);
+  console.log('Horário Início', horarioInicio);
+  console.log('Horário Final', horarioFinal);
 
   return (
     <ScrollView>
       <View>
         <TextTitle>Solicitar sem reserva</TextTitle>
-        {/* <TextTitle>{spaceName}</TextTitle>
-         */}
+        {/* <TextTitle>{spaceName}</TextTitle> */}
         {/*<Picker
           selectedValue={selectedPavilhaoId}
           onValueChange={itemValue => setselectedPavilhaoId(itemValue)}>
@@ -230,9 +238,11 @@ export default function ReservaSemSolicitacao({route}) {
         />
 
         <ViewTextHorario>
-          <TextHorario>Horario Inicio</TextHorario>
-          <TextHorario>Horario Final</TextHorario>
+          <TextHorario>Horário Início</TextHorario>
+          <TextHorario>Horário Final</TextHorario>
         </ViewTextHorario>
+        <TextHorario>AM = antes do meio-dia</TextHorario>
+        <TextHorario>PM = após o meio-dia</TextHorario>
         <ViewHorario>
           <DatePicker
             date={horarioInicio}

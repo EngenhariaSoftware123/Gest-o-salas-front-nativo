@@ -3,12 +3,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Login from '../screens/Login/Login';
 import MainApp from './mainApp';
-import RegistroProfessor from '../screens/RegistrationTeacher/RegistrationTeacher';
-import LinkManagersSpace from '../screens/LinkManagersSpace/LinkManagersSpace';
+import CadastrarProfessor from '../screens/CadastrarProfessor/CadastrarProfessor';
+import LinkManagersSpace from '../screens/GestorDeEspaço/GestorDeEspaço';
 import RegistarSetor from '../screens/RegistrationSector/RegistrationSector';
 import SolicitarReserva from '../screens/SolicitarReserva/SolictarReserva/SolicitarReserva';
 import GerirReserva from '../screens/SolicitarReserva/GerirReserva/GerirReserva';
-import ConsultSpace from '../screens/Space/ConsultarEspaco/ConsultarEspaco';
+import ConsultarEspaço from '../screens/Space/ConsultarEspaco/ConsultarEspaco';
 import ReservaSemSolicitacao from '../screens/ReservaSemSolicitacao/ReservaSemSolicitacao';
 import GerirServicos from '../screens/GerirServicos/GerirServicos';
 import GerirDetalhes from '../screens/GerirServicos/GerirDetalhes/GerirDetalhes';
@@ -25,13 +25,13 @@ const Routes = () => {
         <Stack.Screen name="MainApp" component={MainApp} />
         <Stack.Screen
           name="RegistrationTeacher"
-          component={RegistroProfessor}
+          component={CadastrarProfessor}
         />
         <Stack.Screen name="LinkManagersSpace" component={LinkManagersSpace} />
         <Stack.Screen name="RegistrationSector" component={RegistarSetor} />
         <Stack.Screen name="SolicitarReserva" component={SolicitarReserva} />
         <Stack.Screen name="GerirReserva" component={GerirReserva} />
-        <Stack.Screen name="ConsultarEspaços" component={ConsultSpace} />
+        <Stack.Screen name="ConsultarEspaços" component={ConsultarEspaço} />
         <Stack.Screen
           name="ReservaSemSolicitacao"
           component={ReservaSemSolicitacao}

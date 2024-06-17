@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import FavoriteSpaceItem from '../../../components/favoriteSpaceItem.js';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {
   Container,
   Title,
@@ -11,15 +11,10 @@ import {
   GridContainer,
 } from './Styles.js';
 
-export default function ConsultarEspaço({ route }) {
+export default function ConsultarEspaço({route}) {
   const navigation = useNavigation();
   const [spaces, setSpaces] = useState([]);
-  const { email } = route.params;
-
-  const ReservaSemSolicitacao = () => {
-    navigation.navigate('ReservaSemSolicitacao', { email: email });
-    console.log('Reservas sem solicitação');
-  };
+  const {email} = route.params;
 
   const GerirServicos = () => {
     navigation.navigate('GerirServicos');
@@ -27,7 +22,7 @@ export default function ConsultarEspaço({ route }) {
   };
 
   const GerirReserva = () => {
-    navigation.navigate('GerirReserva', { email: email });
+    navigation.navigate('GerirReserva', {email: email});
     console.log('Gerir  Reserva');
   };
 
@@ -55,9 +50,7 @@ export default function ConsultarEspaço({ route }) {
         <Button onPress={GerirReserva}>
           <ButtonText>Gerir Reserva</ButtonText>
         </Button>
-        <Button onPress={ReservaSemSolicitacao}>
-          <ButtonText>Reserva sem solicitação</ButtonText>
-        </Button>
+
         <Button onPress={GerirServicos}>
           <ButtonText>Gerir Serviços</ButtonText>
         </Button>
