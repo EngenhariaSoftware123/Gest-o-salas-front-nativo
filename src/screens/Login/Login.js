@@ -12,31 +12,39 @@ import {useNavigation} from '@react-navigation/native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import axios from 'axios';
+import {BASEAPI} from '@env';
 
 const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [userLogged, setUserLogged] = useState({});
   const [roles, setRoles] = useState([]);
-  const navigation = useNavigation(); // Importe useNavigation
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    console.log(`${BASEAPI}/user/auth-user`);
+  }, []);
+
+  axios.interceptors.response.use(
+    response => response,
+    error => {
+      console.log('Network Error: ', error);
+      return Promise.reject(error);
+    },
+  );
 
   async function onGoogleButtonPress() {
+    console.log(`${BASEAPI}/user/auth-user`);
     try {
       GoogleSignin.configure({
-        webClientId:
-          '',
-        androidClientId:
-          '',
+        webClientId: '',
+        androidClientId: '',
       });
       await GoogleSignin.signOut();
-      // Verifica se o dispositivo suporta os serviços do Google Play
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-      // Obtém o token de ID do usuário
       const {idToken, user} = await GoogleSignin.signIn();
-      // Navega para a tela Home com os dados do usuário como parâmetros
-      // Verifica o domínio do e-mail
       if (!user.email.endsWith('@uesb.edu.br')) {
-        setError('Apenas email-s da uesb são permitido.');
+        setError('Apenas emails da UESB são permitidos.');
         Alert.alert(
           'Erro',
           'Apenas endereços de e-mail da UESB são permitidos.',
@@ -46,7 +54,7 @@ const Login = () => {
         return;
       }
       const response = await axios.post(
-        'https://gestao-de-espaco-api.onrender.com/user/auth-user',
+        `https://gestao-de-espaco-api.onrender.com/user/auth-user`,
         {
           email: user.email,
         },
@@ -64,9 +72,7 @@ const Login = () => {
         idToken,
       );
 
-      // Faz login do usuário com a credencial
       return await auth().signInWithCredential(googleCredential);
-      // Cria uma credencial do Google com o token
     } catch (e) {
       console.log(e);
     }
@@ -87,7 +93,7 @@ const Login = () => {
         </View>
         <TouchableOpacity
           onPress={async () => {
-            await onGoogleButtonPress(); // Espera a conclusão da função onGoogleButtonPress()
+            await onGoogleButtonPress();
           }}
           disabled={loading}>
           <Image

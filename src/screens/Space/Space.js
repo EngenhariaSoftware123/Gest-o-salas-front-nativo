@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
-import { ScrollView, Alert } from 'react-native';
+import {ScrollView, Alert} from 'react-native';
 import CheckBox from '../../components/CheckBox';
 import {
   Container,
@@ -18,18 +18,20 @@ import {
 export default function Space() {
   const [nomeEspaco, setNomeEspaco] = useState('');
   const [localizacao, setLocalizacao] = useState('');
-  const [capacidade, setCapacidade] = useState(0);
+  const [capacidade, setCapacidade] = useState('');
   const [tipodesala, setTipodeSala] = useState('');
-  const [equipamentos, setEquipamentos] = useState([{ name: '', quantidade: '' }]);
+  const [equipamentos, setEquipamentos] = useState([
+    {name: '', quantidade: ''},
+  ]);
 
   const handleAddEquipment = () => {
-    setEquipamentos([...equipamentos, { name: '', quantidade: '' }]);
+    setEquipamentos([...equipamentos, {name: '', quantidade: ''}]);
   };
 
   const handleEquipamentosChange = (index, field, value) => {
     const newEquipamentos = equipamentos.map((equipamento, i) => {
       if (i === index) {
-        return { ...equipamento, [field]: value };
+        return {...equipamento, [field]: value};
       }
       return equipamento;
     });
@@ -57,20 +59,21 @@ export default function Space() {
       Alert.alert(
         'Erro',
         'Ocorreu um erro, reserva não solicitada',
-        [{ text: 'OK', onPress: () => {} }],
-        { cancelable: false },
+        [{text: 'OK', onPress: () => {}}],
+        {cancelable: false},
       );
     }
   };
 
   const optionsMultiple = [
-    { text: 'Rampa de Acesso', id: 1 },
-    { text: 'Piso Tátil.', id: 2 },
-    { text: 'Carteira Especial: PCD', id: 3 },
+    {text: 'Rampa de Acesso', id: 1},
+    {text: 'Piso Tátil.', id: 2},
+    {text: 'Carteira Especial: PCD', id: 3},
   ];
 
   return (
-    <ScrollView /* contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled" */>
+    <ScrollView /* contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled" */
+    >
       <Container>
         <TextTitle>Cadastrar espaço</TextTitle>
         <Input
@@ -106,12 +109,16 @@ export default function Space() {
             <Input
               placeholder="Nome do equipamento"
               value={equipment.name}
-              onChangeText={text => handleEquipamentosChange(index, 'name', text)}
+              onChangeText={text =>
+                handleEquipamentosChange(index, 'name', text)
+              }
             />
             <Input
               placeholder="Quantidade"
               value={equipment.quantidade}
-              onChangeText={text => handleEquipamentosChange(index, 'quantidade', text)}
+              onChangeText={text =>
+                handleEquipamentosChange(index, 'quantidade', text)
+              }
               keyboardType="numeric"
             />
           </EquipmentContainer>

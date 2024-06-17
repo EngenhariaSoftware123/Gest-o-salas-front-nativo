@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+} from 'react-native';
 import axios from 'axios';
 import FavoriteSpaceItem from '../../../components/favoriteSpaceItem.js';
 import {useNavigation} from '@react-navigation/native';
@@ -8,9 +14,22 @@ export default function ConsultSpace({route}) {
   const navigation = useNavigation();
   const [spaces, setSpaces] = useState([]);
   const {email} = route.params;
+  const ReservaSemSolicitacao = () => {
+    navigation.navigate('ReservaSemSolicitacao');
+    console.log('Reservas sem solicitação');
+  };
+
+  const GerirServicos = () => {
+    navigation.navigate('GerirServicos');
+    console.log('Gerir Serviços');
+  };
+  const GerirReserva = () => {
+    navigation.navigate('GerirReserva', {email: email});
+    console.log('Gerir  Reserva');
+  };
   useEffect(() => {
     axios
-      .get(`https://gestao-de-espaco-api.onrender.com/space/get-spaces`)
+      .get('https://gestao-de-espaco-api.onrender.com/space/get-spaces')
       .then(function (response) {
         console.log(response.data);
         setSpaces(response.data);
@@ -28,10 +47,21 @@ export default function ConsultSpace({route}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Espaços</Text>
-      <TouchableOpacity style={styles.button} onPress={CadastrarEspaco}>
-        <Text style={styles.buttonText}>Cadastrar Espaço</Text>
-      </TouchableOpacity>
-      <View style={styles.gridContainer}>
+      <View style={styles.containerBox}>
+        <TouchableOpacity style={styles.button} onPress={GerirReserva}>
+          <Text style={styles.buttonText}>Gerir Reserva</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={ReservaSemSolicitacao}>
+          <Text style={styles.buttonText}>Reserva sem solicitação</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={GerirServicos}>
+          <Text style={styles.buttonText}>Gerir Serviços</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={CadastrarEspaco}>
+          <Text style={styles.buttonText}>Cadastrar Espaço</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView contentContainerStyle={styles.gridContainer}>
         {spaces.map((space, index) => (
           <FavoriteSpaceItem
             key={index}
@@ -46,7 +76,7 @@ export default function ConsultSpace({route}) {
             }}
           />
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -62,14 +92,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
   },
+  containerBox: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between', // Alternativamente, use 'center' ou 'space-around'
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   button: {
     backgroundColor: '#007AFF',
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderRadius: 5,
-    marginBottom: 20,
-    width: 200,
-    alignSelf: 'center',
+    marginBottom: 10, // Ajuste conforme necessário
+    marginHorizontal: 5, // Ajuste conforme necessário
   },
   buttonText: {
     color: '#FFFFFF',

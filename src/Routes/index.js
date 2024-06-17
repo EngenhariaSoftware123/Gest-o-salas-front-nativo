@@ -18,6 +18,7 @@ import DetailsSpace from '../screens/Space/DetalhesEspaço/DetalhesEspaço';
 import ReservaSemSolicitacao from '../screens/ReservaSemSolicitacao/ReservaSemSolicitacao';
 import GerirServicos from '../screens/GerirServicos/GerirServicos';
 import GerirDetalhes from '../screens/GerirServicos/GerirDetalhes/GerirDetalhes';
+import AlterarEspaco from '../screens/Space/AlterarEspaco/AlterarEspaco';
 
 const Stack = createStackNavigator();
 
@@ -58,6 +59,7 @@ const Routes = () => {
         />
         <Stack.Screen name="GerirServicos" component={GerirServicos} />
         <Stack.Screen name="GerirDetalhes" component={GerirDetalhes} />
+        <Stack.Screen name="AlterarEspaco" component={AlterarEspaco} />
       </Stack.Navigator>
     </NavigationContainer>
   );
