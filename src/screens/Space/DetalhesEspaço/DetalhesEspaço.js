@@ -25,6 +25,13 @@ export default function DetailsSpace({route}) {
     });
     console.log('Solictando Reserva');
   };
+  const AlterarEspaco = () => {
+    navigation.navigate('AlterarEspaco', {
+      email: email,
+      spaceName: name,
+      spaceId: id,
+    });
+  };
 
   useEffect(() => {
     axios
@@ -64,6 +71,9 @@ export default function DetailsSpace({route}) {
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={solicitarManutencao}>
         <Text style={styles.buttonText}>Solicitar Manutenção</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={AlterarEspaco}>
+        <Text style={styles.buttonText}>Editar Espaço</Text>
       </TouchableOpacity>
     </View>
   );
