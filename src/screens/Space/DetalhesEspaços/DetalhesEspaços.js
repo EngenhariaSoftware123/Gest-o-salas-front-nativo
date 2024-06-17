@@ -27,6 +27,15 @@ export default function DetalhesEspaços({route}) {
     console.log('Solictando Reserva');
   };
 
+  const ReservaSemSolicitar = () => {
+    navigation.navigate('ReservaSemSolicitacao', {
+      email: email,
+      spaceName: name,
+      spaceId: id,
+    });
+    console.log('Solictando Sem Reserva');
+  };
+
   useEffect(() => {
     axios
       .get(`https://gestao-de-espaco-api.onrender.com/space/get-spaces`)
@@ -62,6 +71,9 @@ export default function DetalhesEspaços({route}) {
 
       <TouchableOpacity style={styles.button} onPress={ReservaSolicitar}>
         <Text style={styles.buttonText}>Solicitar Reserva</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={ReservaSemSolicitar}>
+        <Text style={styles.buttonText}>Solicitar sem Reserva</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={solicitarManutencao}>
         <Text style={styles.buttonText}>Solicitar Manutenção</Text>
