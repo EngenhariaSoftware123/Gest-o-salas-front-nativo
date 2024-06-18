@@ -13,7 +13,8 @@ import {useNavigation} from '@react-navigation/native';
 export default function ConsultSpace({route}) {
   const navigation = useNavigation();
   const [spaces, setSpaces] = useState([]);
-  const {email} = route.params;
+  const {email, roles} = route.params;
+
   const ReservaSemSolicitacao = () => {
     navigation.navigate('ReservaSemSolicitacao');
     console.log('Reservas sem solicitação');
@@ -23,10 +24,12 @@ export default function ConsultSpace({route}) {
     navigation.navigate('GerirServicos');
     console.log('Gerir Serviços');
   };
+
   const GerirReserva = () => {
     navigation.navigate('GerirReserva', {email: email});
-    console.log('Gerir  Reserva');
+    console.log('Gerir Reserva');
   };
+
   useEffect(() => {
     axios
       .get('https://gestao-de-espaco-api.onrender.com/space/get-spaces')
@@ -44,22 +47,36 @@ export default function ConsultSpace({route}) {
     console.log('Solicitando cadastro de espaço');
   };
 
+  const isMaster = roles.includes('MASTER');
+  const isReserva = roles.includes('RESERVA');
+  const isServico = roles.includes('SERVICO');
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Espaços</Text>
       <View style={styles.containerBox}>
-        <TouchableOpacity style={styles.button} onPress={GerirReserva}>
-          <Text style={styles.buttonText}>Gerir Reserva</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={ReservaSemSolicitacao}>
-          <Text style={styles.buttonText}>Reserva sem solicitação</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={GerirServicos}>
-          <Text style={styles.buttonText}>Gerir Serviços</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={CadastrarEspaco}>
-          <Text style={styles.buttonText}>Cadastrar Espaço</Text>
-        </TouchableOpacity>
+        {isReserva && (
+          <TouchableOpacity style={styles.button} onPress={GerirReserva}>
+            <Text style={styles.buttonText}>Gerir Reserva</Text>
+          </TouchableOpacity>
+        )}
+        {(isReserva || isServico) && (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={ReservaSemSolicitacao}>
+            <Text style={styles.buttonText}>Reserva sem solicitação</Text>
+          </TouchableOpacity>
+        )}
+        {isServico && (
+          <TouchableOpacity style={styles.button} onPress={GerirServicos}>
+            <Text style={styles.buttonText}>Gerir Serviços</Text>
+          </TouchableOpacity>
+        )}
+        {isMaster && (
+          <TouchableOpacity style={styles.button} onPress={CadastrarEspaco}>
+            <Text style={styles.buttonText}>Cadastrar Espaço</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <ScrollView contentContainerStyle={styles.gridContainer}>
         {spaces.map((space, index) => (
@@ -73,6 +90,7 @@ export default function ConsultSpace({route}) {
               capacity: space.space.capacity,
               email: email,
               acessibility: space.space.acessibility,
+              roles: roles,
             }}
           />
         ))}

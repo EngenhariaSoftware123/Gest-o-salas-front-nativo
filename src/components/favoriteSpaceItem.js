@@ -12,6 +12,7 @@ const FavoriteSpaceItem = ({space}) => {
       email: space.email,
       id: space.id,
       acessibility: space.acessibility,
+      roles: space.roles,
     });
   };
   return (
