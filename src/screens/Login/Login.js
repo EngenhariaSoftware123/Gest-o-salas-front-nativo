@@ -37,10 +37,8 @@ const Login = () => {
     console.log(`${BASEAPI}/user/auth-user`);
     try {
       GoogleSignin.configure({
-        webClientId:
-          '733536154755-dj5g13i4jke8psktsk7a5eh09d4cn10m.apps.googleusercontent.com',
-        androidClientId:
-          '733536154755-dj5g13i4jke8psktsk7a5eh09d4cn10m.apps.googleusercontent.com',
+        webClientId: '',
+        androidClientId: '',
       });
       await GoogleSignin.signOut();
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
