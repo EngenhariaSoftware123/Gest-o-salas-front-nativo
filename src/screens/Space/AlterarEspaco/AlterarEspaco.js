@@ -17,7 +17,6 @@ import {
 
 export default function Space({route}) {
   const {email, spaceName, spaceId} = route.params;
-  const [oldSpaceName, setOldSpaceName] = useState('');
   const [nomeEspaco, setNomeEspaco] = useState('');
   const [localizacao, setLocalizacao] = useState('');
   const [capacidade, setCapacidade] = useState('');
@@ -25,6 +24,7 @@ export default function Space({route}) {
   const [equipamentos, setEquipamentos] = useState([
     {name: '', quantidade: ''},
   ]);
+  const [checkboxState, setCheckboxState] = useState({});
 
   useEffect(() => {
     console.log(spaceId);
@@ -34,9 +34,23 @@ export default function Space({route}) {
         `https://gestao-de-espaco-api.onrender.com/space/get-space/${spaceId}`,
       )
       .then(function (response) {
-        setNomeEspaco(response.data.name);
-        setLocalizacao(response.data.pavilion);
-        setTipodeSala(response.data.typeRoom);
+        setNomeEspaco(response.data.space.name);
+        setLocalizacao(response.data.space.pavilion);
+        setTipodeSala(response.data.space.typeRoom);
+        setCapacidade(response.data.space.capacity.toString());
+        setEquipamentos(
+          response.data.available_equipments.map(equipamento => ({
+            ...equipamento,
+            quantidade: equipamento.quantity.toString(), // Ensure quantity is string
+          })),
+        );
+
+        // Initialize checkboxState with all options checked
+        const initialState = optionsMultiple.reduce((acc, option) => {
+          acc[option.text] = true;
+          return acc;
+        }, {});
+        setCheckboxState(initialState);
       })
       .catch(function (error) {
         console.log(error);
@@ -58,18 +72,22 @@ export default function Space({route}) {
   };
 
   const handleSubmit = async () => {
+    const acessibility = Object.entries(checkboxState)
+      .filter(([key, value]) => value)
+      .map(([key, value]) => key);
     try {
       await axios.put(
         `https://gestao-de-espaco-api.onrender.com/space/update-space/${spaceId}`,
         {
-          data: {
-            name: nomeEspaco,
-            pavilion: localizacao,
-            capacity: capacidade,
-            typeRoom: tipodesala,
-            acessibilty: ['cadeira reclinaveis'],
-            available_equipments: [{name: 'cadeira', quantity: 50}],
-          },
+          name: nomeEspaco,
+          pavilion: localizacao,
+          capacity: parseInt(capacidade, 10),
+          typeRoom: tipodesala,
+          acessibility: acessibility,
+          available_equipments: equipamentos.map(equipamento => ({
+            ...equipamento,
+            quantity: parseInt(equipamento.quantidade, 10),
+          })),
         },
       );
       Alert.alert('Espaço Editado com sucesso');
@@ -81,6 +99,13 @@ export default function Space({route}) {
         {cancelable: false},
       );
     }
+  };
+
+  const handleCheckboxChange = (text, isChecked) => {
+    setCheckboxState(prevState => ({
+      ...prevState,
+      [text]: isChecked,
+    }));
   };
 
   const optionsMultiple = [
@@ -119,7 +144,12 @@ export default function Space({route}) {
         </EquipmentContainer>
 
         <TextTitle>Recursos disponíveis:</TextTitle>
-        <CheckBox options={optionsMultiple} multiple />
+        <CheckBox
+          options={optionsMultiple}
+          multiple
+          initialState={checkboxState}
+          onChange={handleCheckboxChange}
+        />
 
         <TextTitle>Equipamento disponíveis:</TextTitle>
         {equipamentos.map((equipment, index) => (

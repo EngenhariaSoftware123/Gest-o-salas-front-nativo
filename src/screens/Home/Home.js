@@ -15,10 +15,6 @@ export default function Home({route}) {
   const {name, email, photo, roles} = route.params;
   const navigation = useNavigation();
 
-  const solicitarManutencao = () => {
-    navigation.navigate('Maintenance', {email: email});
-    console.log('Solicitando manutenção...');
-  };
   const solicitarCadastroProfessor = () => {
     navigation.navigate('RegistrationTeacher');
     console.log('Solicitando cadastro do professor...');
@@ -41,79 +37,50 @@ export default function Home({route}) {
       photo: photo,
       name: name,
     });
-    console.log('Solicitando cadastro de setor');
-  };
-  const CadastrarEspaco = () => {
-    navigation.navigate('Space');
-    console.log('Solicantando cadastro de espaço');
-  };
-
-  /* const SolicitarReserva = () => {
-    navigation.navigate('SolicitarReserva'), {email: email};
-    console.log('Solictando Reserva');
-  }; */
-  const GerirReserva = () => {
-    navigation.navigate('GerirReserva', {email: email});
-    console.log('Gerir  Reserva');
+    console.log('Visualizando perfil');
   };
 
   const ConsultarEspaco = () => {
-    navigation.navigate('ConsultarEspaços', {email: email});
-    console.log('ConsultarEspaços');
+    navigation.navigate('ConsultarEspaços', {email: email, roles: roles});
+    console.log('Consultando Espaços');
   };
 
-  const ReservaSemSolicitacao = () => {
-    navigation.navigate('ReservaSemSolicitacao');
-    console.log('Reservas sem solicitação');
-  };
-
-  const GerirServicos = () => {
-    navigation.navigate('GerirServicos');
-    console.log('Gerir Serviços');
-  };
   const [userName, setUserName] = useState(name);
-  //console.log(userlogin);
-  console.log(roles);
+  const isMaster = roles.includes('MASTER');
+
   return (
     <ScrollView>
       <View style={styles.container}>
         <ProfileImage source={photo} />
-        <Text> </Text>
-        <Text> </Text>
-        <Text>{`${roles}`} </Text>
-        <Text style={styles.title}>Bem Vindo {`${userName}`}</Text>
-        <Text style={styles.container}>{`${userName}`}</Text>
+        <Text>{roles.join(', ')}</Text>
+        <Text style={styles.title}>Bem Vindo {userName}</Text>
+        <Text style={styles.container}>{userName}</Text>
 
         <TouchableOpacity style={styles.button} onPress={verPerfil}>
           <Text style={styles.buttonText}>Meu perfil</Text>
         </TouchableOpacity>
       </View>
+
       <View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={solicitarCadastroProfessor}>
-          <Text style={styles.buttonText}>Cadastrar Professor</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={vincularGestorEspaço}>
-          <Text style={styles.buttonText}>Vincular Gestor ao Espaço</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={RegistarSetor}>
-          <Text style={styles.buttonText}>Cadastrar setor</Text>
-        </TouchableOpacity>
+        {isMaster && (
+          <>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={solicitarCadastroProfessor}>
+              <Text style={styles.buttonText}>Cadastrar Professor</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={vincularGestorEspaço}>
+              <Text style={styles.buttonText}>Vincular Gestor ao Espaço</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={RegistarSetor}>
+              <Text style={styles.buttonText}>Cadastrar setor</Text>
+            </TouchableOpacity>
+          </>
+        )}
         <TouchableOpacity style={styles.button} onPress={ConsultarEspaco}>
           <Text style={styles.buttonText}>Consultar Espaços</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={GerirReserva}>
-          <Text style={styles.buttonText}>Gerir Reserva</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={CadastrarEspaco}>
-          <Text style={styles.buttonText}>CadastrarEspaco</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={ReservaSemSolicitacao}>
-          <Text style={styles.buttonText}>Reserva sem solicitação</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={GerirServicos}>
-          <Text style={styles.buttonText}>Gerir Serviços</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -138,7 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
     padding: 10,
     borderRadius: 5,
-    marginBottom: 50,
+    marginBottom: 20, // Reduced margin for better spacing
   },
   buttonText: {
     color: '#FFFFFF',
